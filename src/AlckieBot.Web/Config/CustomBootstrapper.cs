@@ -19,7 +19,7 @@ namespace AlckieBot.Web.Config
     {
         protected override void ApplicationStartup(ILifetimeScope container, IPipelines pipelines)
         {
-            StaticData.Init();
+            ClashCaller.Init();
             Bots.Init();
             GroupCommands.Init();
             Mods.Init();

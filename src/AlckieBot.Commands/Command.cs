@@ -25,9 +25,19 @@ namespace AlckieBot.Commands
 
         public void Check(ReceivedMessage message)
         {
-            if (!(this.CanBeMuted && !this.Bot.CanSpeak) && Condition.Invoke(message))
+            if (this.Bot != null)
             {
-                Response.Invoke(message);
+                if (!(this.CanBeMuted && !this.Bot.CanSpeak) && Condition.Invoke(message))
+                {
+                    try
+                    {
+                        Response.Invoke(message);
+                    }
+                    catch (Exception)
+                    {
+                        this.Bot.SendMessage("Fuck! Something went wrong, tell Master Alckie to fix this shit.");
+                    }
+                }
             }
         }
     }

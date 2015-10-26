@@ -8,7 +8,7 @@ namespace AlckieBot.Helpers
 {
     public static class TimerHelper
     {
-        public static async void ExecuteDelayedAction(Action action, TimeSpan time)
+        public static async void ExecuteDelayedActionAsync(Action action, TimeSpan time)
         {
             await Task.Delay(time);
             action.Invoke();

@@ -38,5 +38,25 @@ namespace AlckieBot.Commands
                                    bot.SendMessage(parameter);
                                });
         }
+
+        public static Command GetGroupIDsCommand(Bot bot)
+        {
+            return new Command(bot,
+                               (message) =>
+                               {
+                                   return message.text.ToUpper().StartsWith("!GROUPIDS");
+                               },
+                               (message) =>
+                               {
+                                   var groups = Chat.GetAllGroups(ConfigurationManager.AppSettings["GROUPME_TOKEN"]);
+                                   var sb = new StringBuilder();
+                                   foreach(var group in groups)
+                                   {
+                                       sb.AppendLine($"- Name: {group.Name} - ID: {group.ID}");
+                                   }
+                                   bot.SendMessage(sb.ToString());
+                               });
+        }
+
     }
 }

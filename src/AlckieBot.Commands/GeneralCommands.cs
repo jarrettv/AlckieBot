@@ -38,7 +38,7 @@ namespace AlckieBot.Commands
                 {
                     var randomMinutes = RandomHelper.GetRandomNumber(3);
                     var randomSeconds = RandomHelper.GetRandomNumber(30);
-                    TimerHelper.ExecuteDelayedAction(() =>
+                    TimerHelper.ExecuteDelayedActionAsync(() =>
                     {
                         var attachments = new List<dynamic>();
                         attachments.Add(new
@@ -69,7 +69,7 @@ namespace AlckieBot.Commands
             {
                 return (message.text.ToUpper().Contains("@PRETTYBOY"));
             },
-            (message) =>             
+            (message) =>
             {
                 var attachments = new List<dynamic>();
                 attachments.Add(new
@@ -108,7 +108,7 @@ namespace AlckieBot.Commands
         {
             return new Command(bot, (message) =>
             {
-                return (message.system == true &&
+                return (message.system &&
                        (
                            message.text.ToUpper().Contains("JOINED") ||
                            message.text.ToUpper().Contains("ENTROU") ||

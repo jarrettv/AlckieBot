@@ -15,8 +15,7 @@ namespace AlckieBot.Commands
             var commands = new List<Command>
             {
                 GetCommandsCommand(bot),
-                GetClashCallerCommand(bot),
-                GetBetaClashCallerCommand(bot)
+                GetClashCallerCommand(bot)
             };
             return commands;
         }
@@ -42,31 +41,9 @@ namespace AlckieBot.Commands
                                },
                                (message) =>
                                {
-                                   if (StaticData.ClashCallerCode != "")
+                                   if (ClashCaller.Code != "")
                                    {
-                                       bot.SendMessage("http://www.clashcaller.com/war/" + StaticData.ClashCallerCode);
-                                   }
-                                   else
-                                   {
-                                       bot.SendMessage("I don't have the code atm.");
-                                   }
-                               });
-        }
-        public static Command GetBetaClashCallerCommand(Bot bot)
-        {
-            return new Command(bot,
-                               (message) =>
-                               {
-                                   return message.text.ToUpper() == "!BETACLASHCALLER" || message.text.ToUpper() == "!BETACC";
-                               },
-                               (message) =>
-                               {
-                                   if (StaticData.ClashCallerCode != "")
-                                   {
-                                       var getCCTask = Data.ClashCaller.GetClashCallerCode();
-                                       getCCTask.RunSynchronously();
-                                       var code = getCCTask.Result;
-                                       bot.SendMessage("http://www.clashcaller.com/war/" + code);
+                                       bot.SendMessage("http://www.clashcaller.com/war/" + ClashCaller.Code);
                                    }
                                    else
                                    {

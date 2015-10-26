@@ -28,7 +28,6 @@ namespace AlckieBot.Data
         }
 
         public static List<string> AllMods { get; private set; }
-        
         public static void Init()
         {
             var leadershipGroup = Chat.GetAllGroups(ConfigurationManager.AppSettings["GROUPME_TOKEN"]).FirstOrDefault(g => g.ID == ConfigurationManager.AppSettings["LEADERSHIPCHAT_ID"]);

@@ -10,6 +10,6 @@ namespace AlckieBot.Model.Giphy
     {
         public string UserID { get; set; }
         public int GifCounter { get; set; }
-        public bool HasBeenWarned { get; set; }        
+        public bool HasBeenWarned { get; set; }
     }
 }

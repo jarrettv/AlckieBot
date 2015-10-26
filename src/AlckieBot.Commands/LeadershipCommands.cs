@@ -17,7 +17,6 @@ namespace AlckieBot.Commands
             {
                 GetCommandsCommand(bot),
                 GetSetCCCommand(bot),
-                GetBetaSetCCCommand(bot),
                 GetTagLoganCommand(bot)
             };
             return commands;
@@ -78,32 +77,8 @@ namespace AlckieBot.Commands
                                (message) =>
                                {
                                    var clashCallerCode = message.text.Substring(7);
-                                   StaticData.ClashCallerCode = clashCallerCode;
-                                   bot.SendMessage("Clash caller code set to " + StaticData.ClashCallerCode);
-                               });
-        }
-
-        public static Command GetBetaSetCCCommand(Bot bot)
-        {
-            return new Command(bot,
-                               (message) =>
-                               {
-                                   return message.text.ToUpper().StartsWith("!BETASETCC ");
-                               },
-                               (message) =>
-                               {
-                                   try
-                                   {
-                                       var clashCallerCode = message.text.Substring(7);
-                                       Data.ClashCaller.SetClashCaller(clashCallerCode);
-                                       var getCCTask = Data.ClashCaller.GetClashCallerCode();
-                                       getCCTask.Wait();
-                                       bot.SendMessage("Clash caller code set to " + getCCTask.Result);
-                                   }
-                                   catch(Exception ex)
-                                   {
-                                       bot.SendMessage(ex.ToString());
-                                   }
+                                   ClashCaller.SetClashCaller(clashCallerCode);
+                                   bot.SendMessage("Clash caller code set to " + clashCallerCode);
                                });
         }
     }

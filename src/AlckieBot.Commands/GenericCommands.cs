@@ -149,7 +149,7 @@ namespace AlckieBot.Commands
             return new Command(bot,
                                (message) =>
                                {
-                                   return (message.text.ToUpper() == "!BABYCOMEBACK");
+                                   return (message.text.ToUpper() == "!BABYCOMEBACK" || message.text.ToUpper() == "!STARTTHEPARTY");
                                },
                                (message) =>
                                {
@@ -224,7 +224,7 @@ namespace AlckieBot.Commands
             (message) =>
             {
                 var diceParams = message.text.Substring(6);
-                var diceValidatorRegex = @"^(\d+)?d(\d+)$";
+                const string diceValidatorRegex = @"^(\d+)?d(\d+)$";
                 var validate = Regex.Match(diceParams, diceValidatorRegex, RegexOptions.IgnoreCase);
                 if (validate.Success)
                 {
@@ -251,7 +251,7 @@ namespace AlckieBot.Commands
                             var rollResult = RandomHelper.RollDice(diceSides);
                             rollResults[i] = rollResult.ToString();
                         }
-                        bot.SendMessage(String.Format("The results for your roll are: {0}", String.Join(",", rollResults)));
+                        bot.SendMessage($"The results for your roll are: {String.Join(",", rollResults)}");
                     }
                 }
                 else
@@ -318,7 +318,7 @@ namespace AlckieBot.Commands
                                (message) =>
                                {
                                    var parameters = message.text.Substring("!TAGMEIN ".Length);
-                                   var regex = @"^((\d+)h)?(\d+)m$";
+                                   const string regex = @"^((\d+)h)?(\d+)m$";
                                    var validate = Regex.Match(parameters, regex, RegexOptions.IgnoreCase);
                                    if (validate.Success)
                                    {
@@ -336,7 +336,7 @@ namespace AlckieBot.Commands
                                        }
                                        var time = new TimeSpan(hours, minutes, 0);
                                        bot.SendMessage("Sure thing. I will tag you in " + parameters);
-                                       TimerHelper.ExecuteDelayedAction(() =>
+                                       TimerHelper.ExecuteDelayedActionAsync(() =>
                                        {
                                            var attachments = new List<dynamic>();
                                            attachments.Add(new
@@ -376,7 +376,7 @@ namespace AlckieBot.Commands
                                },
                                (message) =>
                                {
-                                   var maxGifCounter = 3;
+                                   const int maxGifCounter = 3;
                                    var timeBeforeDecreasingGifCounter = new TimeSpan(0, 5, 0);
                                    var userGifCounter = bot.GetUserGifSpamCounter(message.sender_id);
                                    if (userGifCounter.GifCounter < maxGifCounter)
@@ -413,7 +413,7 @@ namespace AlckieBot.Commands
                                            {
                                                bot.SendMessage(url);
                                                userGifCounter.GifCounter++;
-                                               TimerHelper.ExecuteDelayedAction(() =>
+                                               TimerHelper.ExecuteDelayedActionAsync(() =>
                                                {
                                                    userGifCounter.GifCounter--;
                                                }, timeBeforeDecreasingGifCounter);
