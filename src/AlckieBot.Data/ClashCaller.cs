@@ -53,7 +53,8 @@ namespace AlckieBot.Data
                 streamWriter.Flush();
                 streamWriter.Close();
             }
-            var deleteResponse = (HttpWebResponse)deleteRequest.GetResponse();            
+            var deleteResponse = (HttpWebResponse)deleteRequest.GetResponse();     
+                   
             var insertRequest = WebRequest.Create(url);
             insertRequest.ContentType = "application/json";
             insertRequest.Method = "POST";

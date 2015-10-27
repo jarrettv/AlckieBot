@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
+using System;
 
 namespace AlckieBot.Web.Modules
 {
@@ -31,6 +32,7 @@ namespace AlckieBot.Web.Modules
                     commandList.AppendLine("!cunt - AlckieBot will tell you if your message was received.<br />");
                     commandList.AppendLine("!id - Gets your GroupMe user ID.<br />");
                     commandList.AppendLine("!roll XdY - Rolls X dices of Y sides.<br />");
+                    commandList.AppendLine("!flipacoin - Flips a coin.<br />");
                     commandList.AppendLine("!gif <search terms> - AlckieBot will use his inferior partner, giphybot, to search for a gif.<br />");
                 }
                 commandList.AppendLine("!shutup - AlckieBot will stop speaking if you are one of his masters, otherwise, he will just be a cunt.<br />");
@@ -53,6 +55,36 @@ namespace AlckieBot.Web.Modules
                 }
 
                 return commandList.ToString();
+            };
+            Get["/Strikes"] = parameters =>
+            {
+                var sb = new StringBuilder();
+                sb.AppendLine("<html><body><table style=\"border: solid 1px gray;\">");
+                sb.AppendLine("<tr><th>Member</th><th>Date</th><th>Reason</th></tr>");
+                var strikes = Strike.GetStrikes();
+                foreach (var strike in strikes)
+                {
+                    string timeAgo;
+                    var dateDiff = DateTime.UtcNow.Subtract(strike.StrickenAt);
+                    if (dateDiff.Days > 7)
+                    {
+                        var weeks = dateDiff.Days / 7;
+                        var days = dateDiff.Days % 7;
+                        timeAgo = $"{weeks}w{days}d ago";
+                    }
+                    else if (dateDiff.Days > 0)
+                    {
+                        timeAgo = $"{dateDiff.Days}d ago";
+                    }
+                    else
+                    {
+                        timeAgo = "today";
+                    }
+                    sb.AppendLine($"<tr><td>{strike.Member.Name}</td><td>{timeAgo}</td><td>{strike.Reason}</td></tr>");
+                }
+                sb.AppendLine("</table></body></html>");
+
+                return sb.ToString();
             };
             Post["/Incoming/{group}"] = parameters =>
             {

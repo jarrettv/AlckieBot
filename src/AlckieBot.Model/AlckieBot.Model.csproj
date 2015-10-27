@@ -50,8 +50,10 @@
     <Compile Include="GroupMe\Bot.cs" />
     <Compile Include="GroupMe\Chat.cs" />
     <Compile Include="GroupMe\ChatMember.cs" />
+    <Compile Include="GroupMe\Attachment.cs" />
     <Compile Include="GroupMe\ReceivedMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Strike.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

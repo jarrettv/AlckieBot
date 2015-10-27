@@ -9,7 +9,7 @@ namespace AlckieBot.Model.GroupMe
 {
     public class ReceivedMessage
     {
-        public object[] attachments { get; set; }
+        public Attachment[] attachments { get; set; }
         public string avatar_url { get; set; }
         public string created_at { get; set; }
         public string group_id { get; set; }
