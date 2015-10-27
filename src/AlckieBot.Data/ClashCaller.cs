@@ -28,7 +28,7 @@ namespace AlckieBot.Data
         {
             var url = MongoLabSettings.MONGOLAB_API + "databases/alckiebot/collections/clashcaller?apiKey=" + MongoLabSettings.MongoLabAPIKey + "&fo=true";
             var request = WebRequest.Create(url);
-            request.ContentType = "text/json";
+            request.ContentType = "application/json";
             request.Method = "GET";
             var response = (HttpWebResponse)request.GetResponse();
             using (var streamReader = new StreamReader(response.GetResponseStream()))

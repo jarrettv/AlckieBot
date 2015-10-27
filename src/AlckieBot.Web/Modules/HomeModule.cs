@@ -84,11 +84,6 @@ namespace AlckieBot.Web.Modules
                                 GroupCommands.WarChatCommands.CheckMessage(message);
                                 break;
                             }
-                        case "asylum":
-                            {
-                                GroupCommands.AsylumChatCommands.CheckMessage(message);
-                                break;
-                            }
                     }
                 }
 

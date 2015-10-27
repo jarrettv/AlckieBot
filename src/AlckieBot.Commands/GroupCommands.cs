@@ -14,7 +14,6 @@ namespace AlckieBot.Commands
         public static GroupCommands GeneralChatCommands { get; set; }
         public static GroupCommands WarChatCommands { get; set; }
         public static GroupCommands TestChatCommands { get; set; }
-        public static GroupCommands AsylumChatCommands { get; set; }
 
         public string GroupName { get; set; }
 
@@ -79,20 +78,6 @@ namespace AlckieBot.Commands
                 GeneralChatCommands = new GroupCommands("general", Bots.GeneralChatBot);
                 GeneralChatCommands.Commands.AddRange(GeneralCommands.GetAllGeneralCommands(Bots.GeneralChatBot));
                 GeneralChatCommands.Commands.AddRange(GenericCommands.GetAllGenericCommands(Bots.GeneralChatBot));
-            }
-
-            if (Bots.AsylumChatBot != null)
-            {
-                AsylumChatCommands = new GroupCommands("asylum", Bots.AsylumChatBot);
-                AsylumChatCommands.Commands.Add(GenericCommands.GetBabyComeBackCommand(Bots.AsylumChatBot));
-                AsylumChatCommands.Commands.Add(GenericCommands.GetShutupCommand(Bots.AsylumChatBot));
-                AsylumChatCommands.Commands.Add(GenericCommands.GetRandomHandsUpCommand(Bots.AsylumChatBot));
-                AsylumChatCommands.Commands.Add(GenericCommands.GetHiCommand(Bots.AsylumChatBot));
-                AsylumChatCommands.Commands.Add(GenericCommands.GetGifCommand(Bots.AsylumChatBot));
-                AsylumChatCommands.Commands.Add(GenericCommands.GetRollDiceCommand(Bots.AsylumChatBot));
-                AsylumChatCommands.Commands.Add(GenericCommands.GetCuntCommand(Bots.AsylumChatBot));
-                AsylumChatCommands.Commands.Add(GenericCommands.GetFlipACoinCommand(Bots.AsylumChatBot));
-                AsylumChatCommands.Commands.Add(GenericCommands.GetTagMeInCommand(Bots.AsylumChatBot));
             }
         }
     }

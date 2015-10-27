@@ -30,10 +30,22 @@ namespace AlckieBot.Data
         public static List<string> AllMods { get; private set; }
         public static void Init()
         {
-            var leadershipGroup = Chat.GetAllGroups(ConfigurationManager.AppSettings["GROUPME_TOKEN"]).FirstOrDefault(g => g.ID == ConfigurationManager.AppSettings["LEADERSHIPCHAT_ID"]);
-            if (leadershipGroup != null)
+            try
             {
-                AllMods = leadershipGroup.Members.Select(m => m.UserID).ToList();
+                var leadershipGroup = Chat.GetAllGroups(ConfigurationManager.AppSettings["GROUPME_TOKEN"]).FirstOrDefault(g => g.ID == ConfigurationManager.AppSettings["LEADERSHIPCHAT_ID"]);
+                if (leadershipGroup != null)
+                {
+                    AllMods = leadershipGroup.Members.Select(m => m.UserID).ToList();
+                }
+            }
+            //Sometimes GroupMe API goes down, so it's better to guarantee that someone can shut down the bot.
+            catch(Exception)
+            {
+                AllMods = new List<string>
+                {
+                    Alckie,
+                    Siscim
+                };
             }
         }
         public static bool IsUserAMod(string userID)
