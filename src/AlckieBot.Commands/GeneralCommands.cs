@@ -30,7 +30,6 @@ namespace AlckieBot.Commands
                 GetRandomPapiQuoteCommand(bot),
                 GetRandomRainmanQuoteCommand(bot)
             };
-            commands.AddRange(DebugCommands.GetAllDebugCommands(bot));
             return commands;
         }
 
@@ -137,12 +136,17 @@ namespace AlckieBot.Commands
             return new Command(bot,
                                (message) =>
                                {
-                                   var isStrikeCommand = (message.text.ToUpper().StartsWith("!SAVEQUOTE "));
+                                   var isSaveQuoteCommand = (message.text.ToUpper().StartsWith("!SAVEQUOTE "));
+                                   if (!isSaveQuoteCommand)
+                                   {
+                                       //Return earlier 
+                                       return false;
+                                   }
                                    var containsAttachment = message.attachments?.Length == 1;
                                    var isAMention = message.attachments[0]?.Type == "mentions";
                                    var containsOnlyOneMention = message.attachments[0]?.User_ids?.Length == 1;
 
-                                   return isStrikeCommand && containsAttachment && isAMention && containsOnlyOneMention;
+                                   return isSaveQuoteCommand && containsAttachment && isAMention && containsOnlyOneMention;
                                },
                                (message) =>
                                {
@@ -152,13 +156,40 @@ namespace AlckieBot.Commands
                                    var userName = message.text.Substring(mention.Loci[0][0] + 1, mention.Loci[0][1] - 1);
                                    var userID = mention.User_ids[0];
 
-                                   Quote.AddQuote(new Model.Quote {
-                                       Member = userName,
-                                       SavedAt = DateTime.UtcNow,
-                                       Message = quote
-                                   });                                                              
 
-                                   bot.SendMessage("This quote has been saved for eternity!");
+                                   if (mention.Loci[0][0] != "!SAVEQUOTE ".Length || quote.Length == 0)
+                                   {
+                                       var randomNumber = RandomHelper.GetRandomNumber(5);
+                                       switch (randomNumber)
+                                       {
+                                           case 1:
+                                               bot.SendMessage("Ask someone who knows his shit to do this for you.");
+                                               break;
+                                           case 2:
+                                               bot.SendMessage("The command is all wrong!");
+                                               break;
+                                           case 3:
+                                               bot.SendMessage("Try again, but try it right this time.");
+                                               break;
+                                           case 4:
+                                               bot.SendMessage("\"!savequote <tag> <quote>\", ffs.");
+                                               break;
+                                           default:
+                                               bot.SendMessage("That's not how it works.");
+                                               break;
+                                       }
+                                   }
+                                   else
+                                   {
+                                       Quote.AddQuote(new Model.Quote
+                                       {
+                                           Member = userName,
+                                           SavedAt = DateTime.UtcNow,
+                                           Message = quote
+                                       });
+
+                                       bot.SendMessage("This quote has been saved for eternity!");
+                                   }
                                });
         }
 
@@ -353,7 +384,8 @@ namespace AlckieBot.Commands
                 {
                     bot.SendMessage("I didn't find shit. :(");
                 }
-                else {
+                else
+                {
                     var randomNumber = RandomHelper.GetRandomNumber(quotes.Count);
                     var selectedQuote = quotes[randomNumber - 1];
 

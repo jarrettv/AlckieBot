@@ -91,11 +91,16 @@ namespace AlckieBot.Commands
                                (message) =>
                                {
                                    var isStrikeCommand = (message.text.ToUpper().StartsWith("!STRIKE "));
+                                   if (!isStrikeCommand || !Mods.AllMods.Contains(message.sender_id))
+                                   {
+                                       //Return earlier 
+                                       return false;
+                                   }
                                    var containsAttachment = message.attachments?.Length == 1;
                                    var isAMention = message.attachments[0]?.Type == "mentions";
                                    var containsOnlyOneMention = message.attachments[0]?.User_ids?.Length == 1;
 
-                                   return isStrikeCommand && containsAttachment && isAMention && containsOnlyOneMention;
+                                   return containsAttachment && isAMention && containsOnlyOneMention;
                                },
                                (message) =>
                                {
@@ -107,23 +112,30 @@ namespace AlckieBot.Commands
                                    var strikeMessage = $"{strickenUserName} was issued a strike for: {strikeReason}";
 
 
-                                   Strike.AddStrike(new Model.Strike
+                                   if (mention.Loci[0][0] != "!SAVEQUOTE ".Length || strikeReason.Length == 0)
                                    {
-                                       Member = new ChatMember
+                                       bot.SendMessage("The way to use this command is \"!strike <tag> <reason>\".");
+                                   }
+                                   else
+                                   {
+                                       Strike.AddStrike(new Model.Strike
                                        {
-                                           Name = strickenUserName,
-                                           UserID = strickenUserID
-                                       },
-                                       StrickenAt = DateTime.UtcNow,
-                                       Reason = strikeReason,
-                                       StrickenBy = new ChatMember
-                                       {
-                                           Name = message.name,
-                                           UserID = message.sender_id
-                                       }
-                                   });
-                                   
-                                   bot.SendMessage(strikeMessage);
+                                           Member = new ChatMember
+                                           {
+                                               Name = strickenUserName,
+                                               UserID = strickenUserID
+                                           },
+                                           StrickenAt = DateTime.UtcNow,
+                                           Reason = strikeReason,
+                                           StrickenBy = new ChatMember
+                                           {
+                                               Name = message.name,
+                                               UserID = message.sender_id
+                                           }
+                                       });
+
+                                       bot.SendMessage(strikeMessage);
+                                   }
                                });
         }
 

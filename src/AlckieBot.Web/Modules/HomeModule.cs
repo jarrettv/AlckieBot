@@ -10,6 +10,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System;
+using AlckieBot.Helpers;
 
 namespace AlckieBot.Web.Modules
 {
@@ -58,33 +59,22 @@ namespace AlckieBot.Web.Modules
             };
             Get["/Strikes"] = parameters =>
             {
-                var sb = new StringBuilder();
-                sb.AppendLine("<html><body><table style=\"border: solid 1px gray;\">");
-                sb.AppendLine("<tr><th>Member</th><th>Date</th><th>Reason</th></tr>");
-                var strikes = Strike.GetStrikes();
-                foreach (var strike in strikes)
-                {
-                    string timeAgo;
-                    var dateDiff = DateTime.UtcNow.Subtract(strike.StrickenAt);
-                    if (dateDiff.Days > 7)
-                    {
-                        var weeks = dateDiff.Days / 7;
-                        var days = dateDiff.Days % 7;
-                        timeAgo = $"{weeks}w{days}d ago";
-                    }
-                    else if (dateDiff.Days > 0)
-                    {
-                        timeAgo = $"{dateDiff.Days}d ago";
-                    }
-                    else
-                    {
-                        timeAgo = "today";
-                    }
-                    sb.AppendLine($"<tr><td>{strike.Member.Name}</td><td>{timeAgo}</td><td>{strike.Reason}</td></tr>");
-                }
-                sb.AppendLine("</table></body></html>");
+                var strikes = Strike.GetStrikes()
+                .Where(s => s.StrickenAt.ToString("MM/yyyy") == DateTime.UtcNow.ToString("MM/yyyy"))
+                .Select(s => new {
+                    Member = s.Member.Name,
+                    Reason = s.Reason,
+                    StrickenBy = s.StrickenBy.Name,
+                    StrickenAt = DateHelper.GetPrettyTimeSpan(DateTime.UtcNow.Subtract(s.StrickenAt))
+                }).ToList();
 
-                return sb.ToString();
+                var model = new
+                {
+                    Month = DateTime.UtcNow.ToString("MMMM, yyyy"),
+                    Strikes = strikes
+                };
+
+                return View["strikes.html", model];
             };
             Post["/Incoming/{group}"] = parameters =>
             {

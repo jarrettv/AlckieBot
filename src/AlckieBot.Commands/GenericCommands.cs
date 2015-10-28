@@ -43,7 +43,8 @@ namespace AlckieBot.Commands
                                    return (message.text.ToUpper() == "!HI" ||
                                            message.text.ToUpper() == "!HEY" ||
                                            message.text.ToUpper() == "!HOWDY" ||
-                                           message.text.ToUpper() == "!HELLO");
+                                           message.text.ToUpper() == "!HELLO" ||
+                                           message.text.ToUpper() == "@ALCKIEBOT");
                                },
                                (message) =>
                                {

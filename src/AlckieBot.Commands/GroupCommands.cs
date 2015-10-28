@@ -85,6 +85,8 @@ namespace AlckieBot.Commands
                 GeneralChatCommands = new GroupCommands("general", Bots.GeneralChatBot);
                 GeneralChatCommands.Commands.AddRange(GeneralCommands.GetAllGeneralCommands(Bots.GeneralChatBot));
                 GeneralChatCommands.Commands.AddRange(GenericCommands.GetAllGenericCommands(Bots.GeneralChatBot));
+                GeneralChatCommands.Commands.Add(LeadershipCommands.GetStrikeCommand(Bots.GeneralChatBot));
+                GeneralChatCommands.Commands.Add(LeadershipCommands.GetStrikeListCommand(Bots.GeneralChatBot));
             }
         }
     }
