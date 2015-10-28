@@ -18,7 +18,17 @@ namespace AlckieBot.Commands
                 GetCommandsCommand(bot),
                 GetMemberJoinedCommand(bot),
                 GetRandomLoganCommand(bot),
-                GetPrettyBoyCommand(bot)
+                GetPrettyBoyCommand(bot),
+                GetRandomQuoteCommand(bot),
+                GetSaveQuoteCommand(bot),
+                GetRandomL0vesitQuoteCommand(bot),
+                GetRandomAlckieQuoteCommand(bot),
+                GetRandomKermitQuoteCommand(bot),
+                GetRandomSiscimQuoteCommand(bot),
+                GetRandomBmanQuoteCommand(bot),
+                GetRandomDirtbagQuoteCommand(bot),
+                GetRandomPapiQuoteCommand(bot),
+                GetRandomRainmanQuoteCommand(bot)
             };
             commands.AddRange(DebugCommands.GetAllDebugCommands(bot));
             return commands;
@@ -119,6 +129,236 @@ namespace AlckieBot.Commands
             (message) =>
             {
                 bot.SendMessage("Welcome to Reddit Mist! Please change your name to match your IGN and, if you haven't already, make sure to read our rules available at www.reddit.com/r/RedditMist");
+            });
+        }
+
+        public static Command GetSaveQuoteCommand(Bot bot)
+        {
+            return new Command(bot,
+                               (message) =>
+                               {
+                                   var isStrikeCommand = (message.text.ToUpper().StartsWith("!SAVEQUOTE "));
+                                   var containsAttachment = message.attachments?.Length == 1;
+                                   var isAMention = message.attachments[0]?.Type == "mentions";
+                                   var containsOnlyOneMention = message.attachments[0]?.User_ids?.Length == 1;
+
+                                   return isStrikeCommand && containsAttachment && isAMention && containsOnlyOneMention;
+                               },
+                               (message) =>
+                               {
+                                   var mention = message.attachments[0];
+
+                                   var quote = message.text.Substring(mention.Loci[0][0] + mention.Loci[0][1] + 1);
+                                   var userName = message.text.Substring(mention.Loci[0][0] + 1, mention.Loci[0][1] - 1);
+                                   var userID = mention.User_ids[0];
+
+                                   Quote.AddQuote(new Model.Quote {
+                                       Member = userName,
+                                       SavedAt = DateTime.UtcNow,
+                                       Message = quote
+                                   });                                                              
+
+                                   bot.SendMessage("This quote has been saved for eternity!");
+                               });
+        }
+
+
+        public static Command GetRandomQuoteCommand(Bot bot)
+        {
+            return new Command(bot, (message) =>
+            {
+                return (message.text.ToUpper() == "!RANDOMQUOTE");
+            },
+            (message) =>
+            {
+                var quotes = Quote.GetQuotes();
+                var randomNumber = RandomHelper.GetRandomNumber(quotes.Count);
+                var selectedQuote = quotes[randomNumber - 1];
+
+                bot.SendMessage($"\"{selectedQuote.Message.Trim()}\" - {selectedQuote.Member}, {selectedQuote.SavedAt.Year} ");
+            });
+        }
+
+        public static Command GetRandomL0vesitQuoteCommand(Bot bot)
+        {
+            return new Command(bot, (message) =>
+            {
+                return (message.text.ToUpper() == "!LOVEQUOTE") && Mods.AllMods.Contains(message.sender_id);
+            },
+            (message) =>
+            {
+                var quotes = Quote.GetQuotes().Where(q => q.Member.Contains("L0vesit")).ToList();
+                if (quotes.Count == 0)
+                {
+                    bot.SendMessage("I didn't find shit. :(");
+                }
+                else
+                {
+                    var randomNumber = RandomHelper.GetRandomNumber(quotes.Count);
+                    var selectedQuote = quotes[randomNumber - 1];
+
+                    bot.SendMessage($"\"{selectedQuote.Message.Trim()}\" - {selectedQuote.Member}, {selectedQuote.SavedAt.Year} ");
+                }
+            });
+        }
+
+        public static Command GetRandomAlckieQuoteCommand(Bot bot)
+        {
+            return new Command(bot, (message) =>
+            {
+                return (message.text.ToUpper() == "!ALCKIEQUOTE") && Mods.AllMods.Contains(message.sender_id);
+            },
+            (message) =>
+            {
+                var quotes = Quote.GetQuotes().Where(q => q.Member.Contains("Alckie")).ToList();
+                if (quotes.Count == 0)
+                {
+                    bot.SendMessage("I didn't find shit. :(");
+                }
+                else
+                {
+                    var randomNumber = RandomHelper.GetRandomNumber(quotes.Count);
+                    var selectedQuote = quotes[randomNumber - 1];
+
+                    bot.SendMessage($"\"{selectedQuote.Message.Trim()}\" - {selectedQuote.Member}, {selectedQuote.SavedAt.Year} ");
+                }
+            });
+        }
+
+        public static Command GetRandomSiscimQuoteCommand(Bot bot)
+        {
+            return new Command(bot, (message) =>
+            {
+                return (message.text.ToUpper() == "!SISSYQUOTE") && Mods.AllMods.Contains(message.sender_id);
+            },
+            (message) =>
+            {
+                var quotes = Quote.GetQuotes().Where(q => q.Member.Contains("Siscim")).ToList();
+                if (quotes.Count == 0)
+                {
+                    bot.SendMessage("I didn't find shit. :(");
+                }
+                else
+                {
+                    var randomNumber = RandomHelper.GetRandomNumber(quotes.Count);
+                    var selectedQuote = quotes[randomNumber - 1];
+
+                    bot.SendMessage($"\"{selectedQuote.Message.Trim()}\" - {selectedQuote.Member}, {selectedQuote.SavedAt.Year} ");
+                }
+            });
+        }
+
+        public static Command GetRandomKermitQuoteCommand(Bot bot)
+        {
+            return new Command(bot, (message) =>
+            {
+                return (message.text.ToUpper() == "!KERMITQUOTE") && Mods.AllMods.Contains(message.sender_id);
+            },
+            (message) =>
+            {
+                var quotes = Quote.GetQuotes().Where(q => q.Member.Contains("Kermit")).ToList();
+                if (quotes.Count == 0)
+                {
+                    bot.SendMessage("I didn't find shit. :(");
+                }
+                else
+                {
+                    var randomNumber = RandomHelper.GetRandomNumber(quotes.Count);
+                    var selectedQuote = quotes[randomNumber - 1];
+
+                    bot.SendMessage($"\"{selectedQuote.Message.Trim()}\" - {selectedQuote.Member}, {selectedQuote.SavedAt.Year} ");
+                }
+            });
+        }
+
+        public static Command GetRandomBmanQuoteCommand(Bot bot)
+        {
+            return new Command(bot, (message) =>
+            {
+                return (message.text.ToUpper() == "!BMANQUOTE") && Mods.AllMods.Contains(message.sender_id);
+            },
+            (message) =>
+            {
+                var quotes = Quote.GetQuotes().Where(q => q.Member.Contains("Miranda")).ToList();
+                if (quotes.Count == 0)
+                {
+                    bot.SendMessage("I didn't find shit. :(");
+                }
+                else
+                {
+                    var randomNumber = RandomHelper.GetRandomNumber(quotes.Count);
+                    var selectedQuote = quotes[randomNumber - 1];
+
+                    bot.SendMessage($"\"{selectedQuote.Message.Trim()}\" - {selectedQuote.Member}, {selectedQuote.SavedAt.Year} ");
+                }
+            });
+        }
+
+        public static Command GetRandomPapiQuoteCommand(Bot bot)
+        {
+            return new Command(bot, (message) =>
+            {
+                return (message.text.ToUpper() == "!PAPIQUOTE") && Mods.AllMods.Contains(message.sender_id);
+            },
+            (message) =>
+            {
+                var quotes = Quote.GetQuotes().Where(q => q.Member.Contains("Papi Chulo")).ToList();
+                if (quotes.Count == 0)
+                {
+                    bot.SendMessage("I didn't find shit. :(");
+                }
+                else
+                {
+                    var randomNumber = RandomHelper.GetRandomNumber(quotes.Count);
+                    var selectedQuote = quotes[randomNumber - 1];
+
+                    bot.SendMessage($"\"{selectedQuote.Message.Trim()}\" - {selectedQuote.Member}, {selectedQuote.SavedAt.Year} ");
+                }
+            });
+        }
+
+        public static Command GetRandomRainmanQuoteCommand(Bot bot)
+        {
+            return new Command(bot, (message) =>
+            {
+                return (message.text.ToUpper() == "!RAINMANQUOTE") && Mods.AllMods.Contains(message.sender_id);
+            },
+            (message) =>
+            {
+                var quotes = Quote.GetQuotes().Where(q => q.Member.Contains("Rainman")).ToList();
+                if (quotes.Count == 0)
+                {
+                    bot.SendMessage("I didn't find shit. :(");
+                }
+                else
+                {
+                    var randomNumber = RandomHelper.GetRandomNumber(quotes.Count);
+                    var selectedQuote = quotes[randomNumber - 1];
+
+                    bot.SendMessage($"\"{selectedQuote.Message.Trim()}\" - {selectedQuote.Member}, {selectedQuote.SavedAt.Year} ");
+                }
+            });
+        }
+
+        public static Command GetRandomDirtbagQuoteCommand(Bot bot)
+        {
+            return new Command(bot, (message) =>
+            {
+                return (message.text.ToUpper() == "!DIRTBAGQUOTE") && Mods.AllMods.Contains(message.sender_id);
+            },
+            (message) =>
+            {
+                var quotes = Quote.GetQuotes().Where(q => q.Member.Contains("Dirtbag")).ToList();
+                if (quotes.Count == 0)
+                {
+                    bot.SendMessage("I didn't find shit. :(");
+                }
+                else {
+                    var randomNumber = RandomHelper.GetRandomNumber(quotes.Count);
+                    var selectedQuote = quotes[randomNumber - 1];
+
+                    bot.SendMessage($"\"{selectedQuote.Message.Trim()}\" - {selectedQuote.Member}, {selectedQuote.SavedAt.Year} ");
+                }
             });
         }
     }

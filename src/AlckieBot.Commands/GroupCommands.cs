@@ -36,7 +36,14 @@ namespace AlckieBot.Commands
             }
             foreach (var command in this.Commands)
             {
-                command.Check(message);
+                try
+                {
+                    command.Check(message);
+                }
+                catch(Exception)
+                {
+                    //Idc, just keep looping through the commands if something goes wrong.
+                }
             }
         }
 

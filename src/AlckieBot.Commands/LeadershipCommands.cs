@@ -101,7 +101,7 @@ namespace AlckieBot.Commands
                                {
                                    var mention = message.attachments[0];
 
-                                   var strikeReason = message.text.Substring(mention.Loci[0][0] + mention.Loci[0][1]);
+                                   var strikeReason = message.text.Substring(mention.Loci[0][0] + mention.Loci[0][1] + 1);
                                    var strickenUserName = message.text.Substring(mention.Loci[0][0] + 1, mention.Loci[0][1] - 1);
                                    var strickenUserID = mention.User_ids[0];
                                    var strikeMessage = $"{strickenUserName} was issued a strike for: {strikeReason}";
