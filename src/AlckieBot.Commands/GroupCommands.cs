@@ -66,6 +66,8 @@ namespace AlckieBot.Commands
                 LeadershipChatCommands.Commands.AddRange(GenericCommands.GetAllGenericCommands(Bots.LeadershipChatBot));
                 LeadershipChatCommands.Commands.AddRange(LeadershipCommands.GetAllLeadershipCommands(Bots.LeadershipChatBot));
                 LeadershipChatCommands.Commands.Add(WarCommands.GetClashCallerCommand(Bots.LeadershipChatBot));
+                LeadershipChatCommands.Commands.Add(WarCommands.GetSetVillageCommand(Bots.LeadershipChatBot));
+                LeadershipChatCommands.Commands.Add(WarCommands.GetGetVillageCommand(Bots.LeadershipChatBot));
             }
 
             if (Bots.WarChatBot != null)

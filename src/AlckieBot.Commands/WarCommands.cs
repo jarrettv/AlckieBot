@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace AlckieBot.Commands
@@ -15,7 +16,9 @@ namespace AlckieBot.Commands
             var commands = new List<Command>
             {
                 GetCommandsCommand(bot),
-                GetClashCallerCommand(bot)
+                GetClashCallerCommand(bot),
+                GetSetVillageCommand(bot),
+                GetGetVillageCommand(bot)
             };
             return commands;
         }
@@ -48,6 +51,53 @@ namespace AlckieBot.Commands
                                    else
                                    {
                                        bot.SendMessage("I don't have the code atm.");
+                                   }
+                               });
+        }
+
+        public static Command GetSetVillageCommand(Bot bot)
+        {
+            return new Command(bot,
+                               (message) =>
+                               {
+                                   var validate = Regex.Match(message.text.ToUpper(), "^!SETVILLAGE #([0-Z])+$", RegexOptions.IgnoreCase);
+                                   return validate.Success;
+                               },
+                               (message) =>
+                               {
+                                   var villageCode = message.text.ToUpper().Substring("!SETVILLAGE ".Length);
+                                   Village.SetVillage(new Model.Village
+                                   {
+                                       GroupMeID = message.sender_id,
+                                       VillageCode = villageCode
+                                   });
+                                   bot.SendMessage($"Village code set to {villageCode}");
+                               });
+        }
+        public static Command GetGetVillageCommand(Bot bot)
+        {
+            return new Command(bot,
+                               (message) =>
+                               {
+                                   return message.text.ToUpper() == "!GETVILLAGE";
+                               },
+                               (message) =>
+                               {
+                                   try
+                                   {
+                                       var village = Village.GetVillageByUserID(message.sender_id);
+                                       if (village == null)
+                                       {
+                                           bot.SendMessage("Your village is not set.");
+                                       }
+                                       else
+                                       {
+                                       bot.SendMessage($"Your village code is {village.VillageCode}");
+                                       }
+                                   }
+                                   catch (Exception ex)
+                                   {
+                                       Bots.TestChatBot.SendMessage(ex.ToString());
                                    }
                                });
         }

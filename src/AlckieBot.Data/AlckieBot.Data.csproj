@@ -66,6 +66,7 @@
     <Compile Include="ClashCaller.cs" />
     <Compile Include="Quote.cs" />
     <Compile Include="Strike.cs" />
+    <Compile Include="Village.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
