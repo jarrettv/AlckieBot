@@ -106,6 +106,11 @@ namespace AlckieBot.Web.Modules
                                 GroupCommands.WarChatCommands.CheckMessage(message);
                                 break;
                             }
+                        case "rho":
+                            {
+                                GroupCommands.RhoChatCommands.CheckMessage(message);
+                                break;
+                            }
                     }
                 }
 
