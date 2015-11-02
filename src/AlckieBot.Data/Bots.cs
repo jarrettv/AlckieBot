@@ -15,8 +15,6 @@ namespace AlckieBot.Data
         public static Bot WarChatBot { get; set; }
         public static Bot TestChatBot { get; set; }
 
-        public static Bot RhoChatBot { get; set; }
-
         public static void Init()
         {
             var bots = Bot.GetRegisteredBots(ConfigurationManager.AppSettings["GROUPME_TOKEN"]);
@@ -37,8 +35,6 @@ namespace AlckieBot.Data
             }
 
             TestChatBot = bots.FirstOrDefault(b => b.GroupID == ConfigurationManager.AppSettings["TESTCHAT_ID"] && b.Name == botName);
-
-            RhoChatBot = bots.FirstOrDefault(b => b.GroupID == ConfigurationManager.AppSettings["RHOCHAT_ID"] && b.Name == botName);
         }
     }
 }

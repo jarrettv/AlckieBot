@@ -29,7 +29,8 @@ namespace AlckieBot.Commands
                 GetEveryoneCommand(bot),
                 GetCallModsCommand(bot),
                 GetModTagCommand(bot),
-                GetTagMeInCommand(bot)
+                GetTagMeInCommand(bot),
+                GetTagMeInWithReasonCommand(bot)
             };
             commands.AddRange(DebugCommands.GetAllDebugCommands(bot));
             return commands;
@@ -314,57 +315,102 @@ namespace AlckieBot.Commands
             return new Command(bot,
                                (message) =>
                                {
-                                   return (message.text.ToUpper().StartsWith("!TAGMEIN "));
+                                   var validate = Regex.Match(message.text.ToUpper(), @"^!TAGMEIN ((\d+)h)?((\d+)m)$", RegexOptions.IgnoreCase);
+                                   return validate.Success;
                                },
                                (message) =>
                                {
                                    var parameters = message.text.Substring("!TAGMEIN ".Length);
-                                   const string regex = @"^((\d+)h)?(\d+)m$";
-                                   var validate = Regex.Match(parameters, regex, RegexOptions.IgnoreCase);
-                                   if (validate.Success)
-                                   {
-                                       var hours = 0;
-                                       var minutes = 0;
+                                   var hours = 0;
+                                   var minutes = 0;
 
-                                       if (parameters.Contains("h"))
+                                   if (parameters.Contains("h"))
+                                   {
+                                       hours = Int32.Parse(parameters.Split('h')[0]);
+                                       minutes = Int32.Parse(parameters.Replace("m", "").Split('h')[1]);
+                                   }
+                                   else
+                                   {
+                                       minutes = Int32.Parse(parameters.Replace("m", ""));
+                                   }
+                                   var time = new TimeSpan(hours, minutes, 0);
+                                   bot.SendMessage("Sure thing. I will tag you in " + parameters);
+                                   TimerHelper.ExecuteDelayedActionAsync(() =>
+                                   {
+                                       var attachments = new List<dynamic>();
+                                       attachments.Add(new
                                        {
-                                           hours = Int32.Parse(parameters.Split('h')[0]);
-                                           minutes = Int32.Parse(parameters.Replace("m", "").Split('h')[1]);
-                                       }
-                                       else
-                                       {
-                                           minutes = Int32.Parse(parameters.Replace("m", ""));
-                                       }
-                                       var time = new TimeSpan(hours, minutes, 0);
-                                       bot.SendMessage("Sure thing. I will tag you in " + parameters);
-                                       TimerHelper.ExecuteDelayedActionAsync(() =>
-                                       {
-                                           var attachments = new List<dynamic>();
-                                           attachments.Add(new
+                                           loci = new int[][]
                                            {
-                                               loci = new int[][]
-                                               {
                                                     new int[]
                                                     {
                                                         0,
                                                         message.name.Length + 1
                                                     }
-                                               },
-                                               type = "mentions",
-                                               user_ids = new string[]
-                                               {
+                                           },
+                                           type = "mentions",
+                                           user_ids = new string[]
+                                           {
                                                     message.sender_id
-                                               }
-                                           });
+                                           }
+                                       });
 
-                                           bot.SendMessage("@" + message.name, attachments);
-                                       }, time);
+                                       bot.SendMessage("@" + message.name, attachments);
+                                   }, time);
+
+                               });
+        }
+
+        public static Command GetTagMeInWithReasonCommand(Bot bot)
+        {
+            return new Command(bot,
+                               (message) =>
+                               {
+                                   var validate = Regex.Match(message.text.ToUpper(), @"^!TAGMEIN ((\d+)h)?((\d+)m) ", RegexOptions.IgnoreCase);
+                                   return validate.Success;
+                               },
+                               (message) =>
+                               {
+                                   var validate = Regex.Match(message.text, @"^!TAGMEIN ((\d+)h)?((\d+)m) ", RegexOptions.IgnoreCase);
+
+                                   var timeParameter = validate.Value.Substring("!TAGMEIN ".Length);
+                                   var reasonParameter = message.text.Substring(validate.Value.Length);
+                                   var hours = 0;
+                                   var minutes = 0;
+
+                                   if (timeParameter.Contains("h"))
+                                   {
+                                       hours = Int32.Parse(timeParameter.Split('h')[0]);
+                                       minutes = Int32.Parse(timeParameter.Replace("m", "").Split('h')[1]);
                                    }
                                    else
                                    {
-                                       bot.SendMessage("Please specify the time in the following format: 1h0m");
+                                       minutes = Int32.Parse(timeParameter.Replace("m", ""));
                                    }
+                                   var time = new TimeSpan(hours, minutes, 0);
+                                   bot.SendMessage("Sure thing. I will tag you in " + timeParameter);
+                                   TimerHelper.ExecuteDelayedActionAsync(() =>
+                                   {
+                                       var attachments = new List<dynamic>();
+                                       attachments.Add(new
+                                       {
+                                           loci = new int[][]
+                                           {
+                                                    new int[]
+                                                    {
+                                                        0,
+                                                        message.name.Length + 1
+                                                    }
+                                           },
+                                           type = "mentions",
+                                           user_ids = new string[]
+                                           {
+                                                    message.sender_id
+                                           }
+                                       });
 
+                                       bot.SendMessage($"@{message.name}! You told me to remind me of: {reasonParameter}.", attachments);
+                                   }, time);
                                });
         }
 

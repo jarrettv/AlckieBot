@@ -13,8 +13,7 @@ namespace AlckieBot.Commands
         public static GroupCommands LeadershipChatCommands { get; set; }
         public static GroupCommands GeneralChatCommands { get; set; }
         public static GroupCommands WarChatCommands { get; set; }
-        public static GroupCommands TestChatCommands { get; set; }
-        public static GroupCommands RhoChatCommands { get; set; }        
+        public static GroupCommands TestChatCommands { get; set; }    
         public string GroupName { get; set; }
 
         public Bot Bot { get; set; }
@@ -67,6 +66,7 @@ namespace AlckieBot.Commands
                 LeadershipChatCommands.Commands.AddRange(GenericCommands.GetAllGenericCommands(Bots.LeadershipChatBot));
                 LeadershipChatCommands.Commands.AddRange(LeadershipCommands.GetAllLeadershipCommands(Bots.LeadershipChatBot));
                 LeadershipChatCommands.Commands.Add(WarCommands.GetClashCallerCommand(Bots.LeadershipChatBot));
+                LeadershipChatCommands.Commands.Add(WarCommands.GetWarMatchUsCommand(Bots.LeadershipChatBot));
                 LeadershipChatCommands.Commands.Add(WarCommands.GetSetVillageCommand(Bots.LeadershipChatBot));
                 LeadershipChatCommands.Commands.Add(WarCommands.GetGetVillageCommand(Bots.LeadershipChatBot));
             }
@@ -90,12 +90,6 @@ namespace AlckieBot.Commands
                 GeneralChatCommands.Commands.AddRange(GenericCommands.GetAllGenericCommands(Bots.GeneralChatBot));
                 GeneralChatCommands.Commands.Add(LeadershipCommands.GetStrikeCommand(Bots.GeneralChatBot));
                 GeneralChatCommands.Commands.Add(LeadershipCommands.GetStrikeListCommand(Bots.GeneralChatBot));
-            }
-
-           if (Bots.RhoChatBot != null)
-            {
-                RhoChatCommands = new GroupCommands("rho", Bots.RhoChatBot);
-                RhoChatCommands.Commands.AddRange(GenericCommands.GetAllGenericCommands(Bots.RhoChatBot));
             }
         }
     }

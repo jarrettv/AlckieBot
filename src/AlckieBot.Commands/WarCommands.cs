@@ -17,6 +17,7 @@ namespace AlckieBot.Commands
             {
                 GetCommandsCommand(bot),
                 GetClashCallerCommand(bot),
+                GetWarMatchUsCommand(bot),
                 GetSetVillageCommand(bot),
                 GetGetVillageCommand(bot)
             };
@@ -52,6 +53,19 @@ namespace AlckieBot.Commands
                                    {
                                        bot.SendMessage("I don't have the code atm.");
                                    }
+                               });
+        }
+
+        public static Command GetWarMatchUsCommand(Bot bot)
+        {
+            return new Command(bot,
+                               (message) =>
+                               {
+                                   return message.text.ToUpper() == "!WARMATCH" || message.text.ToUpper() == "!WM";
+                               },
+                               (message) =>
+                               {
+                                       bot.SendMessage("http://warmatch.us/wars/mist/");
                                });
         }
 
