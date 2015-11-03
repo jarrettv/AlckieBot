@@ -22,7 +22,6 @@ namespace AlckieBot.Model.GroupMe
             request.ContentType = "text/json";
             request.Method = "GET";
 
-            var bots = new List<Bot>();
             var response = (HttpWebResponse)request.GetResponse();
             using (var streamReader = new StreamReader(response.GetResponseStream()))
             {
@@ -30,13 +29,14 @@ namespace AlckieBot.Model.GroupMe
                 var result = JsonConvert.DeserializeObject<dynamic>(responseData);
                 if (result.response != null && result.response.Count > 0)
                 {
-                    foreach(var group in result.response)
+                    foreach (var group in result.response)
                     {
                         var groupMembers = new List<ChatMember>();
-                        foreach(var member in group.members)
+                        foreach (var member in group.members)
                         {
                             groupMembers.Add(new ChatMember
                             {
+                                ID = member.id,
                                 UserID = member.user_id,
                                 Name = member.nickname
                             });
@@ -50,6 +50,40 @@ namespace AlckieBot.Model.GroupMe
                     }
                 }
                 return groups;
+            }
+        }
+        public static Chat GetGroup(string groupMeToken, string groupID)
+        {
+            var request = WebRequest.Create($"{API.URL}groups/{groupID}?token={groupMeToken}");
+            request.ContentType = "text/json";
+            request.Method = "GET";
+
+            var chat = new Chat();
+            var response = (HttpWebResponse)request.GetResponse();
+            using (var streamReader = new StreamReader(response.GetResponseStream()))
+            {
+                var responseData = streamReader.ReadToEnd();
+                var result = JsonConvert.DeserializeObject<dynamic>(responseData);
+                if (result.response != null)
+                {
+                    var chatMembers = new List<ChatMember>();
+                    foreach (var member in result.response.members)
+                    {
+                        chatMembers.Add(new ChatMember
+                        {
+                            ID = member.id,
+                            UserID = member.user_id,
+                            Name = member.nickname
+                        });
+                    }
+                    chat = new Chat
+                    {
+                        ID = result.response.id,
+                        Name = result.response.name,
+                        Members = chatMembers
+                    };
+                }
+                return chat;
             }
         }
     }

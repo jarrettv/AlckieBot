@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Reddit Mist members</title>
+    <meta charset="utf-8" />
+    <style>
+        body {
+            padding-left: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        th {
+            border-bottom: 2px solid black;
+            height: 25px;
+        }
+
+        td {
+            border-bottom: 1px solid black;
+            height: 25px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Reddit Mist member list</h2>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 250px;">Name</th>
+                <th style="width: 150px;">Village Code</th>
+                <th style="width: 60px;">Banned</th>
+            </tr>
+        </thead>
+        <tbody>
+            @Each
+            <tr>
+                <td>@Current.Name</td>
+                <td>@Current.VillageCode</td>
+                <td style="text-align: center;">@Current.IsBanned</td>
+            </tr>
+            @EndEach
+        </tbody>
+    </table>
+</body>
+</html>

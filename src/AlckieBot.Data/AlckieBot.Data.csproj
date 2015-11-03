@@ -65,8 +65,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ClashCaller.cs" />
     <Compile Include="Quote.cs" />
-    <Compile Include="Strike.cs" />
-    <Compile Include="Village.cs" />
+    <Compile Include="Strikes.cs" />
+    <Compile Include="Members.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

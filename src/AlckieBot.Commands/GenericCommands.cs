@@ -17,26 +17,40 @@ namespace AlckieBot.Commands
         {
             var commands = new List<Command>
             {
-                GetHiCommand(bot),
-                GetBabyComeBackCommand(bot),
-                GetShutupCommand(bot),
-                GetCuntCommand(bot),
-                GetIDCommand(bot),
-                GetGifCommand(bot),
-                GetRandomHandsUpCommand(bot),
-                GetRollDiceCommand(bot),
-                GetFlipACoinCommand(bot),
-                GetEveryoneCommand(bot),
-                GetCallModsCommand(bot),
-                GetModTagCommand(bot),
-                GetTagMeInCommand(bot),
-                GetTagMeInWithReasonCommand(bot)
+                CommandListCommand(bot),
+                HiCommand(bot),
+                BabyComeBackCommand(bot),
+                ShutupCommand(bot),
+                CuntCommand(bot),
+                IDCommand(bot),
+                GifCommand(bot),
+                RandomHandsUpCommand(bot),
+                RollDiceCommand(bot),
+                FlipACoinCommand(bot),
+                EveryoneCommand(bot),
+                CallModsCommand(bot),
+                ModTagCommand(bot),
+                TagMeInCommand(bot),
+                TagMeInWithReasonCommand(bot),
+                KickCommand(bot)
             };
             commands.AddRange(DebugCommands.GetAllDebugCommands(bot));
             return commands;
         }
 
-        public static Command GetHiCommand(Bot bot)
+        public static Command CommandListCommand(Bot bot)
+        {
+            return new Command("!commands", "Gets a url with all the available commands.", "", bot, (message) =>
+            {
+                return (message.text.ToUpper() == "!COMMANDS");
+            },
+            (message) =>
+            {
+                bot.SendMessage($"http://alckiebot.azurewebsites.net/commands/{bot.GroupName}");
+            });
+        }
+
+        public static Command HiCommand(Bot bot)
         {
             return new Command(bot,
                                (message) =>
@@ -108,7 +122,7 @@ namespace AlckieBot.Commands
                                    }
                                });
         }
-        public static Command GetShutupCommand(Bot bot)
+        public static Command ShutupCommand(Bot bot)
         {
             return new Command(bot,
                                (message) =>
@@ -146,7 +160,7 @@ namespace AlckieBot.Commands
                                });
         }
 
-        public static Command GetBabyComeBackCommand(Bot bot)
+        public static Command BabyComeBackCommand(Bot bot)
         {
             return new Command(bot,
                                (message) =>
@@ -185,7 +199,7 @@ namespace AlckieBot.Commands
                                }, false);
         }
 
-        public static Command GetCuntCommand(Bot bot)
+        public static Command CuntCommand(Bot bot)
         {
             return new Command(bot, (message) =>
             {
@@ -196,7 +210,7 @@ namespace AlckieBot.Commands
                 bot.SendMessage("Cunt received!");
             });
         }
-        public static Command GetFlipACoinCommand(Bot bot)
+        public static Command FlipACoinCommand(Bot bot)
         {
             return new Command(bot, (message) =>
             {
@@ -217,7 +231,7 @@ namespace AlckieBot.Commands
             });
         }
 
-        public static Command GetRollDiceCommand(Bot bot)
+        public static Command RollDiceCommand(Bot bot)
         {
             return new Command(bot, (message) =>
             {
@@ -281,7 +295,7 @@ namespace AlckieBot.Commands
             });
         }
 
-        public static Command GetRandomHandsUpCommand(Bot bot)
+        public static Command RandomHandsUpCommand(Bot bot)
         {
             return new Command(bot, (message) =>
             {
@@ -298,7 +312,7 @@ namespace AlckieBot.Commands
             });
         }
 
-        public static Command GetIDCommand(Bot bot)
+        public static Command IDCommand(Bot bot)
         {
             return new Command(bot,
                                (message) =>
@@ -310,7 +324,7 @@ namespace AlckieBot.Commands
                                    bot.SendMessage("Your GroupMe ID is " + message.sender_id);
                                });
         }
-        public static Command GetTagMeInCommand(Bot bot)
+        public static Command TagMeInCommand(Bot bot)
         {
             return new Command(bot,
                                (message) =>
@@ -361,7 +375,7 @@ namespace AlckieBot.Commands
                                });
         }
 
-        public static Command GetTagMeInWithReasonCommand(Bot bot)
+        public static Command TagMeInWithReasonCommand(Bot bot)
         {
             return new Command(bot,
                                (message) =>
@@ -409,12 +423,12 @@ namespace AlckieBot.Commands
                                            }
                                        });
 
-                                       bot.SendMessage($"@{message.name}! You told me to remind me of: {reasonParameter}.", attachments);
+                                       bot.SendMessage($"@{message.name}! You told me to remind you: {reasonParameter}.", attachments);
                                    }, time);
                                });
         }
 
-        public static Command GetGifCommand(Bot bot)
+        public static Command GifCommand(Bot bot)
         {
             return new Command(bot,
                                (message) =>
@@ -478,7 +492,7 @@ namespace AlckieBot.Commands
                                    }
                                });
         }
-        public static Command GetEveryoneCommand(Bot bot)
+        public static Command EveryoneCommand(Bot bot)
         {
             return new Command(bot,
                                (message) =>
@@ -489,8 +503,7 @@ namespace AlckieBot.Commands
                                },
                                (message) =>
                                {
-                                   var groups = Chat.GetAllGroups(ConfigurationManager.AppSettings["GROUPME_TOKEN"]);
-                                   var group = groups.FirstOrDefault(g => g.ID == bot.GroupID);
+                                   var group = Chat.GetGroup(ConfigurationManager.AppSettings["GROUPME_TOKEN"], bot.GroupID);
                                    if (group != null)
                                    {
                                        var callMessage = "@Everyone";
@@ -520,7 +533,7 @@ namespace AlckieBot.Commands
                                });
         }
 
-        public static Command GetCallModsCommand(Bot bot)
+        public static Command CallModsCommand(Bot bot)
         {
             return new Command(bot,
                                (message) =>
@@ -531,8 +544,7 @@ namespace AlckieBot.Commands
                                },
                                (message) =>
                                {
-                                   var groups = Chat.GetAllGroups(ConfigurationManager.AppSettings["GROUPME_TOKEN"]);
-                                   var leadershipGroup = groups.FirstOrDefault(g => g.ID == ConfigurationManager.AppSettings["LEADERSHIPCHAT_ID"]);
+                                   var leadershipGroup = Chat.GetGroup(ConfigurationManager.AppSettings["GROUPME_TOKEN"], ConfigurationManager.AppSettings["LEADERSHIPCHAT_ID"]);
                                    if (leadershipGroup != null)
                                    {
                                        //var callMessage = "Masters, one of your minions need help.";
@@ -580,7 +592,7 @@ namespace AlckieBot.Commands
                                });
         }
 
-        public static Command GetModTagCommand(Bot bot)
+        public static Command ModTagCommand(Bot bot)
         {
             return new Command(bot,
                                (message) =>
@@ -599,6 +611,61 @@ namespace AlckieBot.Commands
                                        bot.SendMessage("Plebs lost the right to call upon the Masters. Now stop messing around before we take away your other rights.");
                                    }
                                });
+        }
+
+        public static Command KickCommand(Bot bot)
+        {
+            return new Command(bot,
+                               (message) =>
+                               {
+                                   var isSaveQuoteCommand = (message.text.ToUpper().StartsWith("!KICK "));
+                                   if (!isSaveQuoteCommand)
+                                   {
+                                       //Return earlier
+                                       return false;
+                                   }
+                                   var isAMod = Mods.AllMods.Contains(message.user_id);
+                                   var containsAttachment = message.attachments?.Length == 1;
+                                   var isAMention = message.attachments[0]?.Type == "mentions";
+                                   var containsOnlyOneMention = message.attachments[0]?.User_ids?.Length == 1;
+                                   return isAMod && containsAttachment && isAMention && containsOnlyOneMention;
+                               },
+                               (message) =>
+                               {
+                                   var mention = message.attachments[0];
+                                   var userID = mention.User_ids[0];
+                                   if (!Mods.AllMods.Contains(message.user_id))
+                                   {
+                                       if (bot.KickUser(ConfigurationManager.AppSettings["GROUPME_TOKEN"], userID))
+                                       {
+                                           bot.SendMessage("rekt");
+                                       }
+                                       else
+                                       {
+                                           bot.SendMessage("Shit! I can't...");
+                                       }
+                                   }
+                                   else
+                                   {
+                                       bot.SendMessage("I won't turn against my Master.");
+                                   }
+                               });
+        }
+        
+        public static Command MemberJoinedCommand(Bot bot)
+        {
+            return new Command(bot, (message) =>
+            {
+                return (message.system &&
+                       (
+                           message.text.ToUpper().Contains("JOINED") ||
+                           message.text.ToUpper().Contains("ENTROU")
+                       ));
+            },
+            (message) =>
+            {
+                Members.UpdateMembersByGroupAndKickIfBanned(ConfigurationManager.AppSettings["GROUPME_TOKEN"], bot.GroupID, bot);
+            });
         }
 
     }

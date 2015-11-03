@@ -23,18 +23,28 @@ namespace AlckieBot.Data
             LeadershipChatBot = bots.FirstOrDefault(b => b.GroupID == ConfigurationManager.AppSettings["LEADERSHIPCHAT_ID"] && b.Name == botName);
             if (LeadershipChatBot != null)
             {
+                LeadershipChatBot.GroupName = "leadership";
                 LeadershipChatBot.CanCallMods = true;
             }
 
             GeneralChatBot = bots.FirstOrDefault(b => b.GroupID == ConfigurationManager.AppSettings["GENERALCHAT_ID"] && b.Name == botName);
+            if (GeneralChatBot != null)
+            {
+                GeneralChatBot.GroupName = "general";
+            }
 
             WarChatBot = bots.FirstOrDefault(b => b.GroupID == ConfigurationManager.AppSettings["WARCHAT_ID"] && b.Name == botName);
             if (WarChatBot != null)
             {
                 WarChatBot.CanCallMods = true;
+                WarChatBot.GroupName = "war";
             }
 
             TestChatBot = bots.FirstOrDefault(b => b.GroupID == ConfigurationManager.AppSettings["TESTCHAT_ID"] && b.Name == botName);
+            if (TestChatBot != null)
+            {
+                TestChatBot.GroupName = "test";
+            }
         }
     }
 }

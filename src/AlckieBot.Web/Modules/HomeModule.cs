@@ -59,7 +59,7 @@ namespace AlckieBot.Web.Modules
             };
             Get["/Strikes"] = parameters =>
             {
-                var strikes = Strike.GetStrikes()
+                var strikes = Strikes.GetStrikes()
                 .Where(s => s.StrickenAt.ToString("MM/yyyy") == DateTime.UtcNow.ToString("MM/yyyy"))
                 .Select(s => new {
                     Member = s.Member.Name,
@@ -75,6 +75,18 @@ namespace AlckieBot.Web.Modules
                 };
 
                 return View["strikes.html", model];
+            };
+            Get["/Members"] = parameters =>
+            {
+                var members = Members.GetMembers()
+                .Select(m => new
+                {
+                    Name = m.Name,
+                    VillageCode = m.VillageCode,
+                    IsBanned = m.Banned ? "Yes" : "No"
+                }).ToList();
+
+                return View["members.html", members];
             };
             Post["/Incoming/{group}"] = parameters =>
             {

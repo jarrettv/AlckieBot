@@ -65,7 +65,7 @@ namespace AlckieBot.Commands
                 LeadershipChatCommands = new GroupCommands("leadership", Bots.LeadershipChatBot);
                 LeadershipChatCommands.Commands.AddRange(GenericCommands.GetAllGenericCommands(Bots.LeadershipChatBot));
                 LeadershipChatCommands.Commands.AddRange(LeadershipCommands.GetAllLeadershipCommands(Bots.LeadershipChatBot));
-                LeadershipChatCommands.Commands.Add(WarCommands.GetClashCallerCommand(Bots.LeadershipChatBot));
+                LeadershipChatCommands.Commands.Add(WarCommands.ClashCallerCommand(Bots.LeadershipChatBot));
                 LeadershipChatCommands.Commands.Add(WarCommands.GetWarMatchUsCommand(Bots.LeadershipChatBot));
                 LeadershipChatCommands.Commands.Add(WarCommands.GetSetVillageCommand(Bots.LeadershipChatBot));
                 LeadershipChatCommands.Commands.Add(WarCommands.GetGetVillageCommand(Bots.LeadershipChatBot));
@@ -75,12 +75,14 @@ namespace AlckieBot.Commands
             {
                 WarChatCommands = new GroupCommands("war", Bots.WarChatBot);
                 WarChatCommands.Commands.AddRange(WarCommands.GetAllWarCommands(Bots.WarChatBot));
-                WarChatCommands.Commands.Add(GenericCommands.GetShutupCommand(Bots.WarChatBot));
-                WarChatCommands.Commands.Add(GenericCommands.GetBabyComeBackCommand(Bots.WarChatBot));
-                WarChatCommands.Commands.Add(GenericCommands.GetEveryoneCommand(Bots.WarChatBot));
-                WarChatCommands.Commands.Add(GenericCommands.GetCallModsCommand(Bots.WarChatBot));
-                WarChatCommands.Commands.Add(GenericCommands.GetModTagCommand(Bots.WarChatBot));
-                WarChatCommands.Commands.Add(GenericCommands.GetTagMeInCommand(Bots.WarChatBot));
+                WarChatCommands.Commands.Add(GenericCommands.CommandListCommand(Bots.WarChatBot));
+                WarChatCommands.Commands.Add(GenericCommands.ShutupCommand(Bots.WarChatBot));
+                WarChatCommands.Commands.Add(GenericCommands.BabyComeBackCommand(Bots.WarChatBot));
+                WarChatCommands.Commands.Add(GenericCommands.EveryoneCommand(Bots.WarChatBot));
+                WarChatCommands.Commands.Add(GenericCommands.CallModsCommand(Bots.WarChatBot));
+                WarChatCommands.Commands.Add(GenericCommands.ModTagCommand(Bots.WarChatBot));
+                WarChatCommands.Commands.Add(GenericCommands.TagMeInCommand(Bots.WarChatBot));
+                WarChatCommands.Commands.Add(GenericCommands.MemberJoinedCommand(Bots.WarChatBot));
             }
 
             if (Bots.GeneralChatBot != null)
@@ -88,8 +90,7 @@ namespace AlckieBot.Commands
                 GeneralChatCommands = new GroupCommands("general", Bots.GeneralChatBot);
                 GeneralChatCommands.Commands.AddRange(GeneralCommands.GetAllGeneralCommands(Bots.GeneralChatBot));
                 GeneralChatCommands.Commands.AddRange(GenericCommands.GetAllGenericCommands(Bots.GeneralChatBot));
-                GeneralChatCommands.Commands.Add(LeadershipCommands.GetStrikeCommand(Bots.GeneralChatBot));
-                GeneralChatCommands.Commands.Add(LeadershipCommands.GetStrikeListCommand(Bots.GeneralChatBot));
+                GeneralChatCommands.Commands.Add(GenericCommands.MemberJoinedCommand(Bots.GeneralChatBot));
             }
         }
     }

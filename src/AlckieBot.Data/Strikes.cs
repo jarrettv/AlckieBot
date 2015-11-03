@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace AlckieBot.Data
 {
-    public static class Strike
+    public static class Strikes
     {
         public static void AddStrike(Model.Strike strike)
         {
             var url = MongoLabSettings.MONGOLAB_API + "databases/alckiebot/collections/strikes?apiKey=" + MongoLabSettings.MongoLabAPIKey;
-            
+
             var insertRequest = WebRequest.Create(url);
             insertRequest.ContentType = "application/json";
             insertRequest.Method = "POST";

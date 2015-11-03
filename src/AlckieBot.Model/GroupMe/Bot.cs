@@ -15,6 +15,7 @@ namespace AlckieBot.Model.GroupMe
         public string ID { get; private set; }
         public string Name { get; private set; }
         public string GroupID { get; private set; }
+        public string GroupName { get; set; }
         public bool CanSpeak { get; set; }
         public bool IsBeingADouche { get; set; }
         public bool CanCallMods { get; set; }
@@ -105,6 +106,32 @@ namespace AlckieBot.Model.GroupMe
             {
                 var result = streamReader.ReadToEnd();
             }
+        }
+
+        public bool KickUser(string groupMeToken, string userID)
+        {
+            var chat = Chat.GetGroup(groupMeToken, this.GroupID);
+            if (chat == null)
+            {
+                return false;
+            }
+            var member = chat.Members.FirstOrDefault(m => m.UserID == userID);
+            if (member == null)
+            {
+                return false;
+            }
+            var memberID = member.ID;
+            var url = $"{API.URL}groups/{this.GroupID.Trim()}/members/{memberID.Trim()}/remove?token={groupMeToken}";
+            var request = WebRequest.Create(url);
+            request.Method = "POST";
+            var response = (HttpWebResponse)request.GetResponse();
+
+            using (var streamReader = new StreamReader(response.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+            }
+
+            return response.StatusCode == HttpStatusCode.OK;
         }
 
         public GiphySpamCounter GetUserGifSpamCounter(string userId)

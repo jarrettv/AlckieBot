@@ -9,7 +9,7 @@ namespace AlckieBot.Helpers
     public static class DateHelper
     {
         public static string GetPrettyTimeSpan(TimeSpan timespan)
-        {          
+        {
             var dayDiff = (int)timespan.TotalDays;
             var secDiff = (int)timespan.TotalSeconds;
             if (dayDiff < 0)
@@ -17,45 +17,7 @@ namespace AlckieBot.Helpers
                 return null;
             }
 
-            if (dayDiff == 0)
-            {
-                if (secDiff < 60)
-                {
-                    return "just now";
-                }
-                else if (secDiff < 120)
-                {
-                    return "1 minute ago";
-                }
-                else if (secDiff < 3600)
-                {
-                    return string.Format("{0} minutes ago",
-                        Math.Floor((double)secDiff / 60));
-                }
-                else if (secDiff < 7200)
-                {
-                    return "1 hour ago";
-                }
-                else
-                {
-                    return string.Format("{0} hours ago",
-                        Math.Floor((double)secDiff / 3600));
-                }
-            }
-            else if (dayDiff == 1)
-            {
-                return "yesterday";
-            }
-            else if (dayDiff < 7)
-            {
-                return string.Format("{0} days ago",
-                dayDiff);
-            }
-            else
-            {
-                return string.Format("{0} weeks ago",
-                Math.Ceiling((double)dayDiff / 7));
-            }
+            return dayDiff == 0 ? secDiff < 60 ? "just now" : secDiff < 120 ? "1 minute ago" : secDiff < 3600 ? $"{Math.Floor((double)secDiff / 60)} minutes ago" : secDiff < 7200 ? "1 hour ago" : $"{Math.Floor((double)secDiff / 3600)} hours ago" : dayDiff == 1 ? "yesterday" : dayDiff < 7 ? $"{dayDiff} days ago" : $"{Math.Ceiling((double)dayDiff / 7)} weeks ago";
         }
 
     }

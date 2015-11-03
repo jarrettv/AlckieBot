@@ -11,13 +11,27 @@ namespace AlckieBot.Commands
 {
     public class Command
     {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Example { get; set; }
         public Bot Bot { get; set; }
         public bool CanBeMuted { get; set; }
         public Func<ReceivedMessage, bool> Condition { get; set; }
         public Action<ReceivedMessage> Response { get; set; }
 
+        [Obsolete]
         public Command(Bot bot, Func<ReceivedMessage, bool> condition, Action<ReceivedMessage> response, bool canBeMuted = true)
         {
+            this.Bot = bot;
+            this.Condition = condition;
+            this.Response = response;
+            this.CanBeMuted = canBeMuted;
+        }
+        public Command(string name, string description, string example, Bot bot, Func<ReceivedMessage, bool> condition, Action<ReceivedMessage> response, bool canBeMuted = true)
+        {
+            this.Name = name;
+            this.Description = description;
+            this.Example = example;
             this.Bot = bot;
             this.Condition = condition;
             this.Response = response;

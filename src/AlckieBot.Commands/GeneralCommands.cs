@@ -15,18 +15,17 @@ namespace AlckieBot.Commands
         {
             var commands = new List<Command>
             {
-                GetCommandsCommand(bot),
-                GetMemberJoinedCommand(bot),
-                GetRandomLoganCommand(bot),
-                GetPrettyBoyCommand(bot),
-                GetRandomQuoteCommand(bot),
-                GetSaveQuoteCommand(bot),
-                GetRandomQuoteByMemberCommand(bot)
+                WelcomeMessageCommand(bot),
+                RandomLoganCommand(bot),
+                PrettyBoyCommand(bot),
+                RandomQuoteCommand(bot),
+                SaveQuoteCommand(bot),
+                RandomQuoteByMemberCommand(bot)
             };
             return commands;
         }
 
-        private static Command GetRandomLoganCommand(Bot bot)
+        private static Command RandomLoganCommand(Bot bot)
         {
             return new Command(bot, (message) =>
             {
@@ -65,7 +64,7 @@ namespace AlckieBot.Commands
             });
         }
 
-        public static Command GetPrettyBoyCommand(Bot bot)
+        public static Command PrettyBoyCommand(Bot bot)
         {
             return new Command(bot, (message) =>
             {
@@ -94,19 +93,7 @@ namespace AlckieBot.Commands
             });
         }
 
-        public static Command GetCommandsCommand(Bot bot)
-        {
-            return new Command(bot, (message) =>
-            {
-                return (message.text.ToUpper() == "!COMMANDS");
-            },
-            (message) =>
-            {
-                bot.SendMessage("http://alckiebot.azurewebsites.net/commands/general");
-            });
-        }
-
-        public static Command GetMemberJoinedCommand(Bot bot)
+        public static Command WelcomeMessageCommand(Bot bot)
         {
             return new Command(bot, (message) =>
             {
@@ -124,7 +111,7 @@ namespace AlckieBot.Commands
             });
         }
 
-        public static Command GetSaveQuoteCommand(Bot bot)
+        public static Command SaveQuoteCommand(Bot bot)
         {
             return new Command(bot,
                                (message) =>
@@ -132,7 +119,7 @@ namespace AlckieBot.Commands
                                    var isSaveQuoteCommand = (message.text.ToUpper().StartsWith("!SAVEQUOTE "));
                                    if (!isSaveQuoteCommand)
                                    {
-                                       //Return earlier 
+                                       //Return earlier
                                        return false;
                                    }
                                    var containsAttachment = message.attachments?.Length == 1;
@@ -187,7 +174,7 @@ namespace AlckieBot.Commands
         }
 
 
-        public static Command GetRandomQuoteCommand(Bot bot)
+        public static Command RandomQuoteCommand(Bot bot)
         {
             return new Command(bot, (message) =>
             {
@@ -203,14 +190,14 @@ namespace AlckieBot.Commands
             });
         }
 
-        public static Command GetRandomQuoteByMemberCommand(Bot bot)
+        public static Command RandomQuoteByMemberCommand(Bot bot)
         {
             return new Command(bot, (message) =>
             {
                 return message.text.ToUpper().StartsWith("!RANDOMQUOTE ");
             },
             (message) =>
-            {                
+            {
                 var searchParams = message.text.Substring("!RANDOMQUOTE ".Length);
                 var quotes = Quote.GetQuotes().Where(q => q.Member.ToUpper().Contains(searchParams.ToUpper())).ToList();
                 if (quotes.Count > 0)
@@ -239,6 +226,6 @@ namespace AlckieBot.Commands
 
             });
 
-        }        
+        }
     }
 }

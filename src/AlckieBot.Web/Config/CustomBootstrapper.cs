@@ -23,6 +23,17 @@ namespace AlckieBot.Web.Config
             Bots.Init();
             GroupCommands.Init();
             Mods.Init();
+            try
+            {
+                //The bot can live if the members consistency isn't verified.
+                Members.UpdateMembersByGroup(ConfigurationManager.AppSettings["GROUPME_TOKEN"], ConfigurationManager.AppSettings["GENERALCHAT_ID"]);
+                Members.UpdateMembersByGroup(ConfigurationManager.AppSettings["GROUPME_TOKEN"], ConfigurationManager.AppSettings["WARCHAT_ID"]);
+            }
+            catch(Exception ex)
+            {
+                Bots.TestChatBot.SendMessage("Error while saving members into the database");
+                Bots.TestChatBot.SendMessage(ex.ToString());
+            }
 
             base.ApplicationStartup(container, pipelines);
         }

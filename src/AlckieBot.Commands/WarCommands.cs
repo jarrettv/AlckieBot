@@ -15,8 +15,7 @@ namespace AlckieBot.Commands
         {
             var commands = new List<Command>
             {
-                GetCommandsCommand(bot),
-                GetClashCallerCommand(bot),
+                ClashCallerCommand(bot),
                 GetWarMatchUsCommand(bot),
                 GetSetVillageCommand(bot),
                 GetGetVillageCommand(bot)
@@ -24,21 +23,12 @@ namespace AlckieBot.Commands
             return commands;
         }
 
-        public static Command GetCommandsCommand(Bot bot)
+        public static Command ClashCallerCommand(Bot bot)
         {
-            return new Command(bot, (message) =>
-            {
-                return (message.text.ToUpper() == "!COMMANDS");
-            },
-            (message) =>
-            {
-                bot.SendMessage("http://alckiebot.azurewebsites.net/commands/war");
-            });
-        }
-
-        public static Command GetClashCallerCommand(Bot bot)
-        {
-            return new Command(bot,
+            return new Command("!clashcaller, !cc",
+                               "Gets the url for ClashCaller.",
+                               "",
+                               bot,
                                (message) =>
                                {
                                    return message.text.ToUpper() == "!CLASHCALLER" || message.text.ToUpper() == "!CC";
@@ -58,20 +48,24 @@ namespace AlckieBot.Commands
 
         public static Command GetWarMatchUsCommand(Bot bot)
         {
-            return new Command(bot,
+            return new Command("!warmatch, !wm", "Gets the url for the current WarMatch.Us war.", "",
+                               bot,
                                (message) =>
                                {
                                    return message.text.ToUpper() == "!WARMATCH" || message.text.ToUpper() == "!WM";
                                },
                                (message) =>
                                {
-                                       bot.SendMessage("http://warmatch.us/wars/mist/");
+                                   bot.SendMessage("http://warmatch.us/wars/mist/");
                                });
         }
 
         public static Command GetSetVillageCommand(Bot bot)
         {
-            return new Command(bot,
+            return new Command("!setvillage",
+                               "Sets your village code, so you can call targets using the !call command (Still under development).",
+                               "!setvillage #00000000",
+                               bot,
                                (message) =>
                                {
                                    var validate = Regex.Match(message.text.ToUpper(), "^!SETVILLAGE #([0-Z])+$", RegexOptions.IgnoreCase);
@@ -80,7 +74,7 @@ namespace AlckieBot.Commands
                                (message) =>
                                {
                                    var villageCode = message.text.ToUpper().Substring("!SETVILLAGE ".Length);
-                                   Village.SetVillage(new Model.Village
+                                   Members.UpdateMember(new Model.Member
                                    {
                                        GroupMeID = message.sender_id,
                                        VillageCode = villageCode
@@ -90,7 +84,10 @@ namespace AlckieBot.Commands
         }
         public static Command GetGetVillageCommand(Bot bot)
         {
-            return new Command(bot,
+            return new Command("!getvillage",
+                               "Gets your current village code.",
+                               "",
+                               bot,
                                (message) =>
                                {
                                    return message.text.ToUpper() == "!GETVILLAGE";
@@ -99,14 +96,14 @@ namespace AlckieBot.Commands
                                {
                                    try
                                    {
-                                       var village = Village.GetVillageByUserID(message.sender_id);
+                                       var village = Members.GetMemberByGroupMeID(message.sender_id);
                                        if (village == null)
                                        {
                                            bot.SendMessage("Your village is not set.");
                                        }
                                        else
                                        {
-                                       bot.SendMessage($"Your village code is {village.VillageCode}");
+                                           bot.SendMessage($"Your village code is {village.VillageCode}");
                                        }
                                    }
                                    catch (Exception ex)
