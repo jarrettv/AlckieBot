@@ -77,8 +77,8 @@ namespace AlckieBot.Commands
                 WarChatCommands.Commands.Add(GenericCommands.ShutupCommand(Bots.WarChatBot));
                 WarChatCommands.Commands.Add(GenericCommands.BabyComeBackCommand(Bots.WarChatBot));
                 WarChatCommands.Commands.Add(GenericCommands.EveryoneCommand(Bots.WarChatBot));
-                WarChatCommands.Commands.Add(GenericCommands.CallModsCommand(Bots.WarChatBot));
-                WarChatCommands.Commands.Add(GenericCommands.ModTagCommand(Bots.WarChatBot));
+                //WarChatCommands.Commands.Add(GenericCommands.CallModsCommand(Bots.WarChatBot));
+                //WarChatCommands.Commands.Add(GenericCommands.ModTagCommand(Bots.WarChatBot));
                 WarChatCommands.Commands.Add(GenericCommands.TagMeInCommand(Bots.WarChatBot));
                 WarChatCommands.Commands.Add(GenericCommands.MemberJoinedCommand(Bots.WarChatBot));
             }
