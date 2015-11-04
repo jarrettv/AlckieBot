@@ -621,7 +621,7 @@ namespace AlckieBot.Commands
                                {
                                    var mention = message.attachments[0];
                                    var userID = mention.User_ids[0];
-                                   if (!Mods.AllMods.Contains(message.user_id))
+                                   if (!Mods.AllMods.Contains(userID))
                                    {
                                        if (bot.KickUser(ConfigurationManager.AppSettings["GROUPME_TOKEN"], userID))
                                        {
