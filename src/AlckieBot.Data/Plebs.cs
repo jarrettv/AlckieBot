@@ -13,6 +13,9 @@ namespace AlckieBot.Data
 
         public static readonly Pleb Ancientcows7 = new Pleb { ID = "27370164", Name = "Ancientcows7" };
         public static readonly Pleb Logan = new Pleb { ID = "27980904", Name = "Logan" };
+        public static readonly Pleb Brooklyn = new Pleb { ID = "4876043", Name = "Brooklyn" };
         public static readonly Pleb BMan = new Pleb { ID = "19386899", Name = "MirandaKisBae (Co-Leader)" };
+
+        
     }
 }

@@ -621,7 +621,15 @@ namespace AlckieBot.Commands
                                {
                                    var mention = message.attachments[0];
                                    var userID = mention.User_ids[0];
-                                   if (!Mods.AllMods.Contains(userID))
+                                   if (Mods.AllMods.Contains(userID))
+                                   {
+                                       bot.SendMessage("I won't turn against my Master.");
+                                   }
+                                   else if (userID == Pleb.Brooklyn.ID)
+                                   {
+                                       bot.SendMessage("I won't kick bae!");
+                                   }
+                                   else
                                    {
                                        if (bot.KickUser(ConfigurationManager.AppSettings["GROUPME_TOKEN"], userID))
                                        {
@@ -631,10 +639,6 @@ namespace AlckieBot.Commands
                                        {
                                            bot.SendMessage("Shit! I can't...");
                                        }
-                                   }
-                                   else
-                                   {
-                                       bot.SendMessage("I won't turn against my Master.");
                                    }
                                });
         }
