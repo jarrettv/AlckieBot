@@ -35,7 +35,8 @@ namespace AlckieBot.Data
                 var leadershipGroup = Chat.GetGroup(ConfigurationManager.AppSettings["GROUPME_TOKEN"], ConfigurationManager.AppSettings["LEADERSHIPCHAT_ID"]);
                 if (leadershipGroup != null)
                 {
-                    AllMods = leadershipGroup.Members.Select(m => m.UserID).ToList();
+                    //Everyone on mod chat, but Mike is considered a mod.
+                    AllMods = leadershipGroup.Members.Where(m => m.UserID != "22620347").Select(m => m.UserID).ToList();
                 }
             }
             //Sometimes GroupMe API goes down, so it's better to guarantee that someone can shut down the bot.

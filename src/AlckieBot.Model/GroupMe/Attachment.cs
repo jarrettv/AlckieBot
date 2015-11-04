@@ -11,5 +11,6 @@ namespace AlckieBot.Model.GroupMe
         public int[][] Loci { get; set; }
         public string Type { get; set; }
         public string[] User_ids { get; set; }
+        public string Url { get; set; }
     }
 }

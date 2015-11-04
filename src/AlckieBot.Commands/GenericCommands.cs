@@ -27,8 +27,8 @@ namespace AlckieBot.Commands
                 RollDiceCommand(bot),
                 FlipACoinCommand(bot),
                 EveryoneCommand(bot),
-                //CallModsCommand(bot),
-                //ModTagCommand(bot),
+                CallModsCommand(bot),
+                ModTagCommand(bot),
                 TagMeInCommand(bot),
                 TagMeInWithReasonCommand(bot),
                 KickCommand(bot)
@@ -51,7 +51,7 @@ namespace AlckieBot.Commands
 
         public static Command HiCommand(Bot bot)
         {
-            return new Command("!hi, !hey, !howdy, !hello","AlckieBot will greet you back.","",bot,
+            return new Command("!hi, !hey, !howdy, !hello", "AlckieBot will greet you back.", "", bot,
                                (message) =>
                                {
                                    return (message.text.ToUpper() == "!HI" ||
@@ -123,7 +123,7 @@ namespace AlckieBot.Commands
         }
         public static Command ShutupCommand(Bot bot)
         {
-            return new Command("!shutup","AlckieBot won't reply to commands anymore. Use !backcomebacy to restart him.","",Command.CommandType.ModsOnly, bot,
+            return new Command("!shutup", "AlckieBot won't reply to commands anymore. Use !backcomebacy to restart him.", "", Command.CommandType.ModsOnly, bot,
                                (message) =>
                                {
                                    return (message.text.ToUpper() == "!SHUTUP");
@@ -161,7 +161,7 @@ namespace AlckieBot.Commands
 
         public static Command BabyComeBackCommand(Bot bot)
         {
-            return new Command("!babycomeback, !starttheparty","AlckieBot will go back to his usual self.","", Command.CommandType.ModsOnly, bot,
+            return new Command("!babycomeback, !starttheparty", "AlckieBot will go back to his usual self.", "", Command.CommandType.ModsOnly, bot,
                                (message) =>
                                {
                                    return (message.text.ToUpper() == "!BABYCOMEBACK" || message.text.ToUpper() == "!STARTTHEPARTY");
@@ -200,10 +200,10 @@ namespace AlckieBot.Commands
 
         public static Command CuntCommand(Bot bot)
         {
-            return new Command("!cunt","Send a cunt.","",bot, (message) =>
-            {
-                return (message.text.ToUpper() == "!CUNT" || message.text.ToUpper() == "CUNT");
-            },
+            return new Command("!cunt", "Send a cunt.", "", bot, (message) =>
+               {
+                   return (message.text.ToUpper() == "!CUNT" || message.text.ToUpper() == "CUNT");
+               },
             (message) =>
             {
                 bot.SendMessage("Cunt received!");
@@ -211,10 +211,10 @@ namespace AlckieBot.Commands
         }
         public static Command FlipACoinCommand(Bot bot)
         {
-            return new Command("!flipacoin","AlckieBot will flip a coin for you.","",bot, (message) =>
-            {
-                return (message.text.ToUpper() == "!FLIPACOIN");
-            },
+            return new Command("!flipacoin", "AlckieBot will flip a coin for you.", "", bot, (message) =>
+               {
+                   return (message.text.ToUpper() == "!FLIPACOIN");
+               },
             (message) =>
             {
                 //Dice roll method is more precise with the odds than the random number method.
@@ -310,7 +310,7 @@ namespace AlckieBot.Commands
                 }
             });
         }
-        
+
         public static Command TagMeInCommand(Bot bot)
         {
             return new Command("!tagmein {X}h{Y}m", "AlckieBot will tag you after some time.", "!tagmein 0h10m, !tagmein 10m", bot,
@@ -417,7 +417,7 @@ namespace AlckieBot.Commands
 
         public static Command GifCommand(Bot bot)
         {
-            return new Command("!gif {search parameters}","Search for a random gif in Giphy.", "!gif angelina taxi srs", bot,
+            return new Command("!gif {search parameters}", "Search for a random gif in Giphy.", "!gif angelina taxi srs", bot,
                                (message) =>
                                {
                                    return (message.text.ToUpper().StartsWith("!GIF "));
@@ -485,24 +485,35 @@ namespace AlckieBot.Commands
                                (message) =>
                                {
                                    return Mods.IsUserAMod(message.sender_id) &&
-                                                         (message.text.ToUpper() == "@EVERYONE" ||
-                                                         message.text.ToUpper().StartsWith("@EVERYONE "));
+                                                         (message.text.ToUpper() == "@EVERYONE");
                                },
                                (message) =>
                                {
                                    var group = Chat.GetGroup(ConfigurationManager.AppSettings["GROUPME_TOKEN"], bot.GroupID);
                                    if (group != null)
                                    {
-                                       var callMessage = "@Everyone";
+                                       var callMessage = $"Hey everyone, listen up! {message.name} have something to tell you.";
                                        var userIDs = group.Members.Select(g => g.UserID).ToArray();
                                        var locis = new int[group.Members.Count][];
                                        for (var i = 0; i < group.Members.Count; i++)
                                        {
-                                           locis[i] = new int[]
-                                            {
-                                                0,
-                                                callMessage.Length
-                                            };
+                                           if (i < group.Members.Count - 1)
+                                           {
+                                               locis[i] = new int[]
+                                                {
+                                                        i,
+                                                        1
+                                                };
+                                           }
+                                           else
+                                           {
+                                               //fill out the mention with the rest of the message
+                                               locis[i] = new int[]
+                                               {
+                                                       i,
+                                                       callMessage.Length - i
+                                               };
+                                           }
                                        }
                                        var attachments = new List<dynamic>();
                                        attachments.Add(new
@@ -511,10 +522,6 @@ namespace AlckieBot.Commands
                                            type = "mentions",
                                            user_ids = userIDs
                                        });
-                                       if (message.text.Length > "!EVERYONE ".Length)
-                                       {
-                                           callMessage += " " + message.text.Substring("!EVERYONE ".Length);
-                                       }
                                        bot.SendMessage(callMessage, attachments);
                                    }
                                });
@@ -526,55 +533,61 @@ namespace AlckieBot.Commands
                                (message) =>
                                {
                                    return Mods.IsUserAMod(message.sender_id) &&
-                                          message.text.ToUpper() == "@MODS" &&
-                                          bot.CanCallMods;
+                                          message.text.ToUpper() == "@MODS";
                                },
                                (message) =>
                                {
-                                   var leadershipGroup = Chat.GetGroup(ConfigurationManager.AppSettings["GROUPME_TOKEN"], ConfigurationManager.AppSettings["LEADERSHIPCHAT_ID"]);
-                                   if (leadershipGroup != null)
+                                   if (bot.CanCallMods)
                                    {
-                                       //var callMessage = "Masters, one of your minions need help.";
-                                       //if (bot.GroupID == ConfigurationManager.AppSettings["LEADERSHIPCHAT_ID"])
-                                       //{
-                                       //    callMessage = "Listen up, ya cunts!";
-                                       //}
-                                       //var userIDs = leadershipGroup.Members.Select(g => g.UserID).ToArray();
-                                       //var locis = new int[leadershipGroup.Members.Count][];
-                                       //for (var i = 0; i < leadershipGroup.Members.Count; i++)
-                                       //{
-                                       //    locis[i] = new int[]
-                                       //     {
-                                       //         0,
-                                       //         callMessage.Length
-                                       //     };
-                                       //}
-                                       var userIDs = new string[leadershipGroup.Members.Count];
-                                       var locis = new int[leadershipGroup.Members.Count][];
-                                       var callMessage = "";
-                                       var builder = new StringBuilder();
-                                       builder.Append(callMessage);
-                                       for (var i = 0; i < leadershipGroup.Members.Count; i++)
+                                       var leadershipGroup = Chat.GetGroup(ConfigurationManager.AppSettings["GROUPME_TOKEN"], ConfigurationManager.AppSettings["LEADERSHIPCHAT_ID"]);
+                                       if (leadershipGroup != null)
                                        {
-                                           locis[i] = new int[]
+                                           var callMessage = "Masters, one of your minions needs your attention.";
+                                           if (bot.GroupID == ConfigurationManager.AppSettings["LEADERSHIPCHAT_ID"])
                                            {
-                                               builder.ToString().Length,
-                                               leadershipGroup.Members[i].Name.Length + 1
-                                           };
-                                           userIDs[i] = leadershipGroup.Members[i].UserID;
-                                           builder.Append("@" + leadershipGroup.Members[i].Name + " ");
+                                               callMessage = "Listen up, ya cunts!";
+                                           }
+                                           if (callMessage.Length < leadershipGroup.Members.Count)
+                                           {
+                                               var charactersToFill = leadershipGroup.Members.Count - callMessage.Length;
+                                               callMessage = callMessage.PadRight(charactersToFill);
+                                           }
+                                           var userIDs = leadershipGroup.Members.Select(g => g.UserID).ToArray();
+                                           var locis = new int[leadershipGroup.Members.Count][];
+                                           for (var i = 0; i < leadershipGroup.Members.Count; i++)
+                                           {
+                                               if (i < leadershipGroup.Members.Count - 1)
+                                               {
+                                                   locis[i] = new int[]
+                                                    {
+                                                        i,
+                                                        1
+                                                    };
+                                               }
+                                               else
+                                               {
+                                                   //fill out the mention with the rest of the message
+                                                   locis[i] = new int[]
+                                                   {
+                                                       i,
+                                                       callMessage.Length - i
+                                                   };
+                                               }
+                                           }
+
+                                           var attachments = new List<dynamic>();
+                                           attachments.Add(new
+                                           {
+                                               loci = locis,
+                                               type = "mentions",
+                                               user_ids = userIDs
+                                           });
+                                           bot.SendMessage(callMessage, attachments);
                                        }
-                                       callMessage = builder.ToString();
-
-
-                                       var attachments = new List<dynamic>();
-                                       attachments.Add(new
-                                       {
-                                           loci = locis,
-                                           type = "mentions",
-                                           user_ids = userIDs
-                                       });
-                                       bot.SendMessage(callMessage, attachments);
+                                   }
+                                   else
+                                   {
+                                       bot.SendMessage("Plebs are not allowed to call the Masters right now.");
                                    }
                                });
         }
@@ -602,7 +615,7 @@ namespace AlckieBot.Commands
 
         public static Command KickCommand(Bot bot)
         {
-            return new Command("!kick {tag}", "Kick someone from the chat", "!kick @Supachris210", Command.CommandType.ModsOnly, bot,
+            return new Command("!kick {tag}", "Kick someone from the chat", "!kick @Cha", Command.CommandType.ModsOnly, bot,
                                (message) =>
                                {
                                    var isSaveQuoteCommand = (message.text.ToUpper().StartsWith("!KICK "));
@@ -625,10 +638,6 @@ namespace AlckieBot.Commands
                                    {
                                        bot.SendMessage("I won't turn against my Master.");
                                    }
-                                   else if (userID == Pleb.Brooklyn.ID)
-                                   {
-                                       bot.SendMessage("I won't kick bae!");
-                                   }
                                    else
                                    {
                                        if (bot.KickUser(ConfigurationManager.AppSettings["GROUPME_TOKEN"], userID))
@@ -642,7 +651,7 @@ namespace AlckieBot.Commands
                                    }
                                });
         }
-        
+
         public static Command MemberJoinedCommand(Bot bot)
         {
             return new Command("", "", "", bot, (message) =>
