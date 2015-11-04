@@ -22,14 +22,13 @@ namespace AlckieBot.Commands
                 BabyComeBackCommand(bot),
                 ShutupCommand(bot),
                 CuntCommand(bot),
-                IDCommand(bot),
                 GifCommand(bot),
                 RandomHandsUpCommand(bot),
                 RollDiceCommand(bot),
                 FlipACoinCommand(bot),
                 EveryoneCommand(bot),
-                CallModsCommand(bot),
-                ModTagCommand(bot),
+                //CallModsCommand(bot),
+                //ModTagCommand(bot),
                 TagMeInCommand(bot),
                 TagMeInWithReasonCommand(bot),
                 KickCommand(bot)
@@ -40,7 +39,7 @@ namespace AlckieBot.Commands
 
         public static Command CommandListCommand(Bot bot)
         {
-            return new Command("!commands", "Gets a url with all the available commands.", "", bot, (message) =>
+            return new Command("!commands", "Get a url with all the available commands.", "", bot, (message) =>
             {
                 return (message.text.ToUpper() == "!COMMANDS");
             },
@@ -52,7 +51,7 @@ namespace AlckieBot.Commands
 
         public static Command HiCommand(Bot bot)
         {
-            return new Command(bot,
+            return new Command("!hi, !hey, !howdy, !hello","AlckieBot will greet you back.","",bot,
                                (message) =>
                                {
                                    return (message.text.ToUpper() == "!HI" ||
@@ -124,7 +123,7 @@ namespace AlckieBot.Commands
         }
         public static Command ShutupCommand(Bot bot)
         {
-            return new Command(bot,
+            return new Command("!shutup","AlckieBot won't reply to commands anymore. Use !backcomebacy to restart him.","",Command.CommandType.ModsOnly, bot,
                                (message) =>
                                {
                                    return (message.text.ToUpper() == "!SHUTUP");
@@ -162,7 +161,7 @@ namespace AlckieBot.Commands
 
         public static Command BabyComeBackCommand(Bot bot)
         {
-            return new Command(bot,
+            return new Command("!babycomeback, !starttheparty","AlckieBot will go back to his usual self.","", Command.CommandType.ModsOnly, bot,
                                (message) =>
                                {
                                    return (message.text.ToUpper() == "!BABYCOMEBACK" || message.text.ToUpper() == "!STARTTHEPARTY");
@@ -201,7 +200,7 @@ namespace AlckieBot.Commands
 
         public static Command CuntCommand(Bot bot)
         {
-            return new Command(bot, (message) =>
+            return new Command("!cunt","Send a cunt.","",bot, (message) =>
             {
                 return (message.text.ToUpper() == "!CUNT" || message.text.ToUpper() == "CUNT");
             },
@@ -212,7 +211,7 @@ namespace AlckieBot.Commands
         }
         public static Command FlipACoinCommand(Bot bot)
         {
-            return new Command(bot, (message) =>
+            return new Command("!flipacoin","AlckieBot will flip a coin for you.","",bot, (message) =>
             {
                 return (message.text.ToUpper() == "!FLIPACOIN");
             },
@@ -233,7 +232,7 @@ namespace AlckieBot.Commands
 
         public static Command RollDiceCommand(Bot bot)
         {
-            return new Command(bot, (message) =>
+            return new Command("!roll {X}d{Y}", "Roll X dices with Y faces.", "!roll 1d6", bot, (message) =>
             {
                 return (message.text.ToUpper().StartsWith("!ROLL "));
             },
@@ -297,7 +296,7 @@ namespace AlckieBot.Commands
 
         public static Command RandomHandsUpCommand(Bot bot)
         {
-            return new Command(bot, (message) =>
+            return new Command("", "", "", bot, (message) =>
             {
                 return (message.text.Contains(@"\o/"));
             },
@@ -311,22 +310,10 @@ namespace AlckieBot.Commands
                 }
             });
         }
-
-        public static Command IDCommand(Bot bot)
-        {
-            return new Command(bot,
-                               (message) =>
-                               {
-                                   return (message.text.ToUpper() == "!ID");
-                               },
-                               (message) =>
-                               {
-                                   bot.SendMessage("Your GroupMe ID is " + message.sender_id);
-                               });
-        }
+        
         public static Command TagMeInCommand(Bot bot)
         {
-            return new Command(bot,
+            return new Command("!tagmein {X}h{Y}m", "AlckieBot will tag you after some time.", "!tagmein 0h10m, !tagmein 10m", bot,
                                (message) =>
                                {
                                    var validate = Regex.Match(message.text.ToUpper(), @"^!TAGMEIN ((\d+)h)?((\d+)m)$", RegexOptions.IgnoreCase);
@@ -377,7 +364,7 @@ namespace AlckieBot.Commands
 
         public static Command TagMeInWithReasonCommand(Bot bot)
         {
-            return new Command(bot,
+            return new Command("!tagmein {X}h{Y}m {reminder}", "AlckieBot will tag you after some time, and remind you of something.", "!tagmein 0h10m Call my dad.", bot,
                                (message) =>
                                {
                                    var validate = Regex.Match(message.text.ToUpper(), @"^!TAGMEIN ((\d+)h)?((\d+)m) ", RegexOptions.IgnoreCase);
@@ -430,7 +417,7 @@ namespace AlckieBot.Commands
 
         public static Command GifCommand(Bot bot)
         {
-            return new Command(bot,
+            return new Command("!gif {search parameters}","Search for a random gif in Giphy.", "!gif angelina taxi srs", bot,
                                (message) =>
                                {
                                    return (message.text.ToUpper().StartsWith("!GIF "));
@@ -494,7 +481,7 @@ namespace AlckieBot.Commands
         }
         public static Command EveryoneCommand(Bot bot)
         {
-            return new Command(bot,
+            return new Command("@everyone", "Tag every member in the chat.", "", Command.CommandType.ModsOnly, bot,
                                (message) =>
                                {
                                    return Mods.IsUserAMod(message.sender_id) &&
@@ -535,7 +522,7 @@ namespace AlckieBot.Commands
 
         public static Command CallModsCommand(Bot bot)
         {
-            return new Command(bot,
+            return new Command("@mods", "Tag all Mist mods.", "", bot,
                                (message) =>
                                {
                                    return Mods.IsUserAMod(message.sender_id) &&
@@ -594,7 +581,7 @@ namespace AlckieBot.Commands
 
         public static Command ModTagCommand(Bot bot)
         {
-            return new Command(bot,
+            return new Command("!modtag", "Set whether plebs can tag the mods or not.", "", Command.CommandType.ModsOnly, bot,
                                (message) =>
                                {
                                    return (message.text.ToUpper() == "!MODTAG");
@@ -615,7 +602,7 @@ namespace AlckieBot.Commands
 
         public static Command KickCommand(Bot bot)
         {
-            return new Command(bot,
+            return new Command("!kick {tag}", "Kick someone from the chat", "!kick @Supachris210", Command.CommandType.ModsOnly, bot,
                                (message) =>
                                {
                                    var isSaveQuoteCommand = (message.text.ToUpper().StartsWith("!KICK "));
@@ -654,7 +641,7 @@ namespace AlckieBot.Commands
         
         public static Command MemberJoinedCommand(Bot bot)
         {
-            return new Command(bot, (message) =>
+            return new Command("", "", "", bot, (message) =>
             {
                 return (message.system &&
                        (

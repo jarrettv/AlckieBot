@@ -22,7 +22,7 @@ namespace AlckieBot.Commands
 
         private static Command BeADoucheCommand(Bot bot)
         {
-            return new Command(bot,
+            return new Command("", "", "", Command.CommandType.GodOnly,bot,
                                (message) =>
                                {
                                    return message.sender_id == Mods.Alckie && message.text.ToUpper() == "!BEADOUCHE";
@@ -43,7 +43,7 @@ namespace AlckieBot.Commands
 
         private static Command StopBeingADoucheCommand(Bot bot)
         {
-            return new Command(bot,
+            return new Command("", "", "", Command.CommandType.GodOnly, bot,
                                (message) =>
                                {
                                    return message.sender_id == Mods.Alckie && message.text.ToUpper() == "!STOPBEINGADOUCHE";

@@ -23,7 +23,7 @@ namespace AlckieBot.Commands
         
         public static Command GetSetCCCommand(Bot bot)
         {
-            return new Command("!setcc","Sets the clash caller code for the current war.","!setcc abc01",bot,
+            return new Command("!setcc {CC code}","Set the clash caller code for the current war.","!setcc abc01", Command.CommandType.ModsOnly, bot,
                                (message) =>
                                {
                                    return message.text.ToUpper().StartsWith("!SETCC ");

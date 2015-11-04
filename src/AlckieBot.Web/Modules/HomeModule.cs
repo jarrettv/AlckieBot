@@ -22,40 +22,39 @@ namespace AlckieBot.Web.Modules
             Get["/"] = _ => { return "Hello world!"; };
             Get["/Commands/{group}"] = parameters =>
             {
-                var group = (string)parameters.group;
-
-                var commandList = new StringBuilder();
-                commandList.AppendLine("GENERIC COMMANDS:<br />");
-                commandList.AppendLine("!commands - Will point you here.<br />");
-                if (group != "war")
+                var commands = new List<Command>();
+                string chatTitle = "";
+                switch((string)parameters.group)
                 {
-                    commandList.AppendLine("!hi, !hey, !hello, !howdy - AlckieBot will greet you.<br />");
-                    commandList.AppendLine("!cunt - AlckieBot will tell you if your message was received.<br />");
-                    commandList.AppendLine("!id - Gets your GroupMe user ID.<br />");
-                    commandList.AppendLine("!roll XdY - Rolls X dices of Y sides.<br />");
-                    commandList.AppendLine("!flipacoin - Flips a coin.<br />");
-                    commandList.AppendLine("!gif <search terms> - AlckieBot will use his inferior partner, giphybot, to search for a gif.<br />");
-                }
-                commandList.AppendLine("!shutup - AlckieBot will stop speaking if you are one of his masters, otherwise, he will just be a cunt.<br />");
-                commandList.AppendLine("!babycomeback - AlckieBot will go back to speaking, if you are his master.<br />");
-
-                commandList.AppendLine("<br />GROUP SPECIFIC COMMANDS:<br />");
-                switch (group)
-                {
-                    case "leadership":
-                        {
-                            commandList.AppendLine("!setcc - Sets the Clash Caller code.<br />");
-                            commandList.AppendLine("!clashcaller, !cc - Gets the Clash Caller url.<br />");
-                            break;
-                        }
                     case "war":
-                        {
-                            commandList.AppendLine("!clashcaller, !cc - Gets the Clash Caller url.<br />");
-                            break;
-                        }
+                        commands = GroupCommands.WarChatCommands.Commands;
+                        chatTitle = "War";
+                        break;
+                    case "leadership":
+                        commands = GroupCommands.LeadershipChatCommands.Commands;
+                        chatTitle = "Leadership";
+                        break;
+                    case "general":
+                        commands = GroupCommands.GeneralChatCommands.Commands;
+                        chatTitle = "General";
+                        break;
+                    case "test":
+                        commands = GroupCommands.TestChatCommands.Commands;
+                        chatTitle = "Test";
+                        break;
                 }
 
-                return commandList.ToString();
+                var publicCommands = commands.Where(c => c.Type == Command.CommandType.Public && !string.IsNullOrEmpty(c.Name)).OrderBy(c => c.Name).ToList();
+                var modOnlyCommands = commands.Where(c => c.Type == Command.CommandType.ModsOnly && !string.IsNullOrEmpty(c.Name)).OrderBy(c => c.Name).ToList();
+
+                var model = new
+                {
+                    ChatTitle = chatTitle,
+                    PublicCommands = publicCommands,
+                    ModOnlyCommands = modOnlyCommands
+                };
+
+                return View["commands.html", model];
             };
             Get["/Strikes"] = parameters =>
             {

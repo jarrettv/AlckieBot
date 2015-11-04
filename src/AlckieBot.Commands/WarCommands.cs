@@ -26,7 +26,7 @@ namespace AlckieBot.Commands
         public static Command ClashCallerCommand(Bot bot)
         {
             return new Command("!clashcaller, !cc",
-                               "Gets the url for ClashCaller.",
+                               "Get the url for ClashCaller.",
                                "",
                                bot,
                                (message) =>
@@ -48,7 +48,7 @@ namespace AlckieBot.Commands
 
         public static Command GetWarMatchUsCommand(Bot bot)
         {
-            return new Command("!warmatch, !wm", "Gets the url for the current WarMatch.Us war.", "",
+            return new Command("!warmatch, !wm", "Get the url for the current WarMatch.Us war.", "",
                                bot,
                                (message) =>
                                {
@@ -62,8 +62,8 @@ namespace AlckieBot.Commands
 
         public static Command GetSetVillageCommand(Bot bot)
         {
-            return new Command("!setvillage",
-                               "Sets your village code, so you can call targets using the !call command (Still under development).",
+            return new Command("!setvillage #{village code}",
+                               "Set your village code, so you can call targets using the !call command (Still under development).",
                                "!setvillage #00000000",
                                bot,
                                (message) =>
@@ -74,18 +74,25 @@ namespace AlckieBot.Commands
                                (message) =>
                                {
                                    var villageCode = message.text.ToUpper().Substring("!SETVILLAGE ".Length);
-                                   Members.UpdateMember(new Model.Member
+                                   var member = Members.GetMemberByGroupMeID(message.sender_id);
+                                   if (member == null)
                                    {
-                                       GroupMeID = message.sender_id,
-                                       VillageCode = villageCode
-                                   });
+                                       member = new Model.Member
+                                       {
+                                           GroupMeID = message.sender_id,
+                                           Name = message.name,
+                                           Banned = false
+                                       };
+                                   }
+                                   member.VillageCode = villageCode;
+                                   Members.UpdateMember(member);
                                    bot.SendMessage($"Village code set to {villageCode}");
                                });
         }
         public static Command GetGetVillageCommand(Bot bot)
         {
             return new Command("!getvillage",
-                               "Gets your current village code.",
+                               "Get your current village code.",
                                "",
                                bot,
                                (message) =>
@@ -96,14 +103,14 @@ namespace AlckieBot.Commands
                                {
                                    try
                                    {
-                                       var village = Members.GetMemberByGroupMeID(message.sender_id);
-                                       if (village == null)
+                                       var member = Members.GetMemberByGroupMeID(message.sender_id);
+                                       if (member == null || String.IsNullOrEmpty(member.VillageCode))
                                        {
                                            bot.SendMessage("Your village is not set.");
                                        }
                                        else
                                        {
-                                           bot.SendMessage($"Your village code is {village.VillageCode}");
+                                           bot.SendMessage($"Your village code is {member.VillageCode}");
                                        }
                                    }
                                    catch (Exception ex)

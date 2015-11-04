@@ -14,10 +14,18 @@ namespace AlckieBot.Commands
         public string Name { get; set; }
         public string Description { get; set; }
         public string Example { get; set; }
+        public CommandType Type { get; set; }
         public Bot Bot { get; set; }
         public bool CanBeMuted { get; set; }
         public Func<ReceivedMessage, bool> Condition { get; set; }
         public Action<ReceivedMessage> Response { get; set; }
+
+        public enum CommandType {
+            Public,
+            ModsOnly,
+            GodOnly,
+            Automatic
+        }
 
         [Obsolete]
         public Command(Bot bot, Func<ReceivedMessage, bool> condition, Action<ReceivedMessage> response, bool canBeMuted = true)
@@ -32,6 +40,19 @@ namespace AlckieBot.Commands
             this.Name = name;
             this.Description = description;
             this.Example = example;
+            this.Type = CommandType.Public;
+            this.Bot = bot;
+            this.Condition = condition;
+            this.Response = response;
+            this.CanBeMuted = canBeMuted;
+        }
+
+        public Command(string name, string description, string example, CommandType type, Bot bot, Func<ReceivedMessage, bool> condition, Action<ReceivedMessage> response, bool canBeMuted = true)
+        {
+            this.Name = name;
+            this.Description = description;
+            this.Example = example;
+            this.Type = type;
             this.Bot = bot;
             this.Condition = condition;
             this.Response = response;

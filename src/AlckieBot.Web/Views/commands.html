@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Commands for @Model.ChatTitle Chat</title>
+	<meta charset="utf-8" />
+    <style>
+        body
+        {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        .command {
+            border: 1px solid gray;
+            margin-bottom: 5px;
+            padding-bottom: 3px;
+        }
+
+        .command .name {
+            background-color: #eee;
+            padding: 5px;
+            font-size: 16px;
+        }
+
+        .command .description {
+            padding-top: 5px;
+            padding-left: 10px;
+            font-size: 14px;
+        }
+        
+        .command .example:not(:empty):before {
+            content: "Ex: ";
+        }
+        .command .example:not(:empty) {
+            font-size: 14px;
+            font-style: italic;
+            padding-top: 7px;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Commands for @Model.ChatTitle Chat</h2>
+    <h3>Public commands</h3>
+    @Each.PublicCommands
+    <div class="command">
+        <div class="name">@Current.Name</div>
+        <div class="description">@Current.Description</div>
+        <div class="example">@Current.Example</div>
+    </div>    
+    @EndEach    
+
+    <h3>Mods-only commands</h3>
+    @Each.ModOnlyCommands
+    <div class="command">
+        <div class="name">@Current.Name</div>
+        <div class="description">@Current.Description</div>
+        <div class="example">@Current.Example</div>
+    </div>
+    @EndEach
+</body>
+</html>

@@ -55,8 +55,6 @@ namespace AlckieBot.Commands
                 TestChatCommands.Commands.AddRange(GenericCommands.GetAllGenericCommands(Bots.TestChatBot));
                 TestChatCommands.Commands.AddRange(LeadershipCommands.GetAllLeadershipCommands(Bots.TestChatBot));
                 TestChatCommands.Commands.AddRange(WarCommands.GetAllWarCommands(Bots.TestChatBot));
-                TestChatCommands.Commands.Add(GodCommands.SendMessageToGeneralCommand(Bots.GeneralChatBot));
-                TestChatCommands.Commands.Add(GodCommands.SendMessageToLeadershipCommand(Bots.LeadershipChatBot));
                 TestChatCommands.Commands.Add(GodCommands.GetGroupIDsCommand(Bots.TestChatBot));
             }
 

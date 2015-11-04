@@ -16,86 +16,16 @@ namespace AlckieBot.Commands
             var commands = new List<Command>
             {
                 WelcomeMessageCommand(bot),
-                RandomLoganCommand(bot),
-                PrettyBoyCommand(bot),
                 RandomQuoteCommand(bot),
                 SaveQuoteCommand(bot),
                 RandomQuoteByMemberCommand(bot)
             };
             return commands;
         }
-
-        private static Command RandomLoganCommand(Bot bot)
-        {
-            return new Command(bot, (message) =>
-            {
-                return (message.sender_id == Pleb.Logan.ID && !message.text.ToUpper().StartsWith("!"));
-            },
-            (message) =>
-            {
-                var randomNumber = RandomHelper.GetRandomNumber(20);
-                //Only 5% chance of this command being executed.
-                if (randomNumber == 1)
-                {
-                    var randomMinutes = RandomHelper.GetRandomNumber(3);
-                    var randomSeconds = RandomHelper.GetRandomNumber(30);
-                    TimerHelper.ExecuteDelayedActionAsync(() =>
-                    {
-                        var attachments = new List<dynamic>();
-                        attachments.Add(new
-                        {
-                            loci = new int[][]
-                            {
-                            new int[]
-                            {
-                                0,
-                                Pleb.Logan.Name.Length + 1
-                            }
-                            },
-                            type = "mentions",
-                            user_ids = new string[]
-                             {
-                            Pleb.Logan.ID
-                             }
-                        });
-                        bot.SendMessage("@" + Pleb.Logan.Name + "", attachments);
-                    }, new TimeSpan(0, randomMinutes, randomSeconds));
-                }
-            });
-        }
-
-        public static Command PrettyBoyCommand(Bot bot)
-        {
-            return new Command(bot, (message) =>
-            {
-                return (message.text.ToUpper().Contains("@PRETTYBOY"));
-            },
-            (message) =>
-            {
-                var attachments = new List<dynamic>();
-                attachments.Add(new
-                {
-                    loci = new int[][]
-                    {
-                            new int[]
-                            {
-                                message.text.ToUpper().IndexOf("@PRETTYBOY"),
-                                "@PRETTYBOY".Length
-                            }
-                    },
-                    type = "mentions",
-                    user_ids = new string[]
-                     {
-                            Mods.Siscim
-                     }
-                });
-                bot.SendMessage(message.text, attachments);
-            });
-        }
-
+        
         public static Command WelcomeMessageCommand(Bot bot)
         {
-            return new Command(bot, (message) =>
+            return new Command("", "", "", Command.CommandType.Automatic, bot, (message) =>
             {
                 return (message.system &&
                        (
@@ -113,7 +43,7 @@ namespace AlckieBot.Commands
 
         public static Command SaveQuoteCommand(Bot bot)
         {
-            return new Command(bot,
+            return new Command("!savequote <tag> <quote>", "Save a quote for eternity.", "!savequote @Logan AlckieBot is amazing!", bot,
                                (message) =>
                                {
                                    var isSaveQuoteCommand = (message.text.ToUpper().StartsWith("!SAVEQUOTE "));
@@ -176,7 +106,7 @@ namespace AlckieBot.Commands
 
         public static Command RandomQuoteCommand(Bot bot)
         {
-            return new Command(bot, (message) =>
+            return new Command("!randomquote", "Return a random quote from someone", "", bot, (message) =>
             {
                 return (message.text.ToUpper() == "!RANDOMQUOTE");
             },
@@ -192,7 +122,7 @@ namespace AlckieBot.Commands
 
         public static Command RandomQuoteByMemberCommand(Bot bot)
         {
-            return new Command(bot, (message) =>
+            return new Command("!randomquote <search parameters>", "Return a random quote from someone who matches the search parameters.", "!randomquote Alckie", bot, (message) =>
             {
                 return message.text.ToUpper().StartsWith("!RANDOMQUOTE ");
             },

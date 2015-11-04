@@ -29,7 +29,7 @@ namespace AlckieBot.Web.Config
                 Members.UpdateMembersByGroup(ConfigurationManager.AppSettings["GROUPME_TOKEN"], ConfigurationManager.AppSettings["GENERALCHAT_ID"]);
                 Members.UpdateMembersByGroup(ConfigurationManager.AppSettings["GROUPME_TOKEN"], ConfigurationManager.AppSettings["WARCHAT_ID"]);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Bots.TestChatBot.SendMessage("Error while saving members into the database");
                 Bots.TestChatBot.SendMessage(ex.ToString());
