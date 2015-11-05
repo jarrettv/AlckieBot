@@ -18,6 +18,7 @@ namespace AlckieBot.Commands
             var commands = new List<Command>
             {
                 CommandListCommand(bot),
+                UnixTimeCommand(bot),
                 HiCommand(bot),
                 BabyComeBackCommand(bot),
                 ShutupCommand(bot),
@@ -201,12 +202,24 @@ namespace AlckieBot.Commands
         public static Command CuntCommand(Bot bot)
         {
             return new Command("!cunt", "Send a cunt.", "", bot, (message) =>
-               {
-                   return (message.text.ToUpper() == "!CUNT" || message.text.ToUpper() == "CUNT");
-               },
+            {
+                return (message.text.ToUpper() == "!CUNT" || message.text.ToUpper() == "CUNT");
+            },
             (message) =>
             {
                 bot.SendMessage("Cunt received!");
+            });
+        }
+        public static Command UnixTimeCommand(Bot bot)
+        {
+            return new Command("!time", "Gets the current date and time in Unix time.", "", bot, (message) =>
+            {
+                return (message.text.ToUpper() == "!TIME");
+            },
+            (message) =>
+            {
+                var unixTime = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
+                bot.SendMessage($"{unixTime} UTC.");
             });
         }
         public static Command FlipACoinCommand(Bot bot)
