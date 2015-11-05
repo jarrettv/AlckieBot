@@ -532,8 +532,7 @@ namespace AlckieBot.Commands
             return new Command("@mods", "Tag all Mist mods.", "", bot,
                                (message) =>
                                {
-                                   return Mods.IsUserAMod(message.sender_id) &&
-                                          message.text.ToUpper() == "@MODS";
+                                   return message.text.ToUpper() == "@MODS";
                                },
                                (message) =>
                                {
