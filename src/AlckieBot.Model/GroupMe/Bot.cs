@@ -20,6 +20,7 @@ namespace AlckieBot.Model.GroupMe
         public bool IsBeingADouche { get; set; }
         public bool CanCallMods { get; set; }
         public List<GiphySpamCounter> GifCounters { get; set; }
+        public Dictionary<string, int> CustomCounters { get; set; }
 
         private Bot(string id, string name, string groupID)
         {
@@ -30,6 +31,7 @@ namespace AlckieBot.Model.GroupMe
             this.IsBeingADouche = false;
             this.CanCallMods = false;
             this.GifCounters = new List<GiphySpamCounter>();
+            this.CustomCounters = new Dictionary<string, int>();
         }
 
         public static Bot Register(string groupMeToken, string name, string groupID)

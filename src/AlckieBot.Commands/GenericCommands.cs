@@ -7,6 +7,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AlckieBot.Commands
@@ -32,7 +33,8 @@ namespace AlckieBot.Commands
                 ModTagCommand(bot),
                 TagMeInCommand(bot),
                 TagMeInWithReasonCommand(bot),
-                KickCommand(bot)
+                KickCommand(bot),
+                DontFlipTheTableCommand(bot)
             };
             commands.AddRange(DebugCommands.GetAllDebugCommands(bot));
             return commands;
@@ -316,10 +318,51 @@ namespace AlckieBot.Commands
             (message) =>
             {
                 var randomNumber = RandomHelper.GetRandomNumber(10);
-                //Only 5% chance of this command being executed.
+                //Only 10% chance of this command being executed.
                 if (randomNumber == 1)
                 {
                     bot.SendMessage(@"\o/");
+                }
+            });
+        }
+        public static Command DontFlipTheTableCommand(Bot bot)
+        {
+            return new Command("", "", "", bot, (message) =>
+            {
+                return (new Regex(@"[(].+[)）].+┻[━]{0,}┻")).Match($"{message.text}|{message.name}").Success;
+            },
+            (message) =>
+            {
+                int flipTableCounter;
+                bot.CustomCounters.TryGetValue("FlipTableCounter", out flipTableCounter);
+                switch (flipTableCounter)
+                {
+                    case 0:
+                        bot.SendMessage(@"┬─┬﻿ノ(°-°ノ) Please dont flip the table.");
+                        break;
+                    case 1:
+                        bot.SendMessage(@"┬─┬﻿ノ(>_<ノ) Please dont flip the fucking table.");
+                        break;
+                    case 2:
+                        bot.SendMessage(@"┬─┬﻿ノ(ò_óノ) STOP FLIPPING THE FUCKING TABLE!");
+                        break;
+                    case 3:
+                        bot.SendMessage(@"(╯>_<）╯︵ /(.□.\)  FUCK YOU!.");
+                        Thread.Sleep(100);
+                        bot.SendMessage(@"┬─┬﻿ノ(°-°ノ)");
+                        break;
+                    default:
+                        bot.SendMessage(@"(/.□.)\ ︵╰('□')╯︵ /(.□.\) Fuck you all, I'm out of here.");
+                        break;
+                }
+                if (flipTableCounter < 4)
+                {
+                    flipTableCounter++;
+                    bot.CustomCounters["FlipTableCounter"] = flipTableCounter;
+                    TimerHelper.ExecuteDelayedActionAsync(() => 
+                    {
+                        bot.CustomCounters["FlipTableCounter"]--;
+                    }, new TimeSpan(0, 2, 0));
                 }
             });
         }
