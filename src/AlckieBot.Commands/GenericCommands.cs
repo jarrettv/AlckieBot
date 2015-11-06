@@ -352,7 +352,7 @@ namespace AlckieBot.Commands
                         bot.SendMessage(@"┬─┬﻿ノ(°-°ノ)");
                         break;
                     default:
-                        bot.SendMessage(@"(/.□.)\ ︵╰('□')╯︵ /(.□.\) Fuck you all, I'm out of here.");
+                        bot.SendMessage(@"(/.□.)\ ︵╰('□')╯︵ /(.□.\) Fuck you all, I'm done with this.");
                         break;
                 }
                 if (flipTableCounter < 4)
