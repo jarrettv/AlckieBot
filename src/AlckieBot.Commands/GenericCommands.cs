@@ -351,7 +351,7 @@ namespace AlckieBot.Commands
                         Thread.Sleep(100);
                         bot.SendMessage(@"┬─┬﻿ノ(°-°ノ)");
                         break;
-                    default:
+                    case 4:
                         bot.SendMessage(@"(/.□.)\ ︵╰('□')╯︵ /(.□.\) Fuck you all, I'm done with this.");
                         break;
                 }
