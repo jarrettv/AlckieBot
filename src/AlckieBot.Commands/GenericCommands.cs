@@ -362,7 +362,7 @@ namespace AlckieBot.Commands
                     TimerHelper.ExecuteDelayedActionAsync(() => 
                     {
                         bot.CustomCounters["FlipTableCounter"]--;
-                    }, new TimeSpan(0, 2, 0));
+                    }, new TimeSpan(0, 10, 0));
                 }
             });
         }
