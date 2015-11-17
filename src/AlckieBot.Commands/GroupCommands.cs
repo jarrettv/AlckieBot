@@ -13,7 +13,10 @@ namespace AlckieBot.Commands
         public static GroupCommands LeadershipChatCommands { get; set; }
         public static GroupCommands GeneralChatCommands { get; set; }
         public static GroupCommands WarChatCommands { get; set; }
-        public static GroupCommands TestChatCommands { get; set; }    
+        public static GroupCommands TestChatCommands { get; set; }
+
+        public static GroupCommands WhenInRomeChatCommands { get; set; }
+
         public string GroupName { get; set; }
 
         public Bot Bot { get; set; }
@@ -39,7 +42,7 @@ namespace AlckieBot.Commands
                 {
                     command.Check(message);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Bots.TestChatBot.SendMessage(ex.ToString());
                     //Idc, just keep looping through the commands if something goes wrong.
@@ -90,6 +93,25 @@ namespace AlckieBot.Commands
                 GeneralChatCommands.Commands.AddRange(GeneralCommands.GetAllGeneralCommands(Bots.GeneralChatBot));
                 GeneralChatCommands.Commands.AddRange(GenericCommands.GetAllGenericCommands(Bots.GeneralChatBot));
                 GeneralChatCommands.Commands.Add(GenericCommands.MemberJoinedCommand(Bots.GeneralChatBot));
+            }
+
+            if (Bots.WhenInRomeChatBot != null)
+            {
+                WhenInRomeChatCommands = new GroupCommands("wheninrome", Bots.WhenInRomeChatBot);
+
+                WhenInRomeChatCommands.Commands.Add(GenericCommands.CommandListCommand(Bots.WhenInRomeChatBot));
+                WhenInRomeChatCommands.Commands.Add(GenericCommands.UnixTimeCommand(Bots.WhenInRomeChatBot));
+                WhenInRomeChatCommands.Commands.Add(GenericCommands.HiCommand(Bots.WhenInRomeChatBot));
+                WhenInRomeChatCommands.Commands.Add(GenericCommands.BabyComeBackCommand(Bots.WhenInRomeChatBot));
+                WhenInRomeChatCommands.Commands.Add(GenericCommands.ShutupCommand(Bots.WhenInRomeChatBot));
+                WhenInRomeChatCommands.Commands.Add(GenericCommands.CuntCommand(Bots.WhenInRomeChatBot));
+                WhenInRomeChatCommands.Commands.Add(GenericCommands.GifCommand(Bots.WhenInRomeChatBot));
+                WhenInRomeChatCommands.Commands.Add(GenericCommands.RandomHandsUpCommand(Bots.WhenInRomeChatBot));
+                WhenInRomeChatCommands.Commands.Add(GenericCommands.RollDiceCommand(Bots.WhenInRomeChatBot));
+                WhenInRomeChatCommands.Commands.Add(GenericCommands.FlipACoinCommand(Bots.WhenInRomeChatBot));
+                WhenInRomeChatCommands.Commands.Add(GenericCommands.TagMeInCommand(Bots.WhenInRomeChatBot));
+                WhenInRomeChatCommands.Commands.Add(GenericCommands.TagMeInWithReasonCommand(Bots.WhenInRomeChatBot));
+                WhenInRomeChatCommands.Commands.Add(GenericCommands.DontFlipTheTableCommand(Bots.WhenInRomeChatBot));
             }
         }
     }

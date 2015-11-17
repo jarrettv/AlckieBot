@@ -38,6 +38,10 @@ namespace AlckieBot.Web.Modules
                         commands = GroupCommands.GeneralChatCommands.Commands;
                         chatTitle = "General";
                         break;
+                    case "wheninrome":
+                        commands = GroupCommands.WhenInRomeChatCommands.Commands;
+                        chatTitle = "When In Rome";
+                        break;
                     case "test":
                         commands = GroupCommands.TestChatCommands.Commands;
                         chatTitle = "Test";
@@ -115,6 +119,11 @@ namespace AlckieBot.Web.Modules
                         case "war":
                             {
                                 GroupCommands.WarChatCommands.CheckMessage(message);
+                                break;
+                            }
+                        case "wheninrome":
+                            {
+                                GroupCommands.WhenInRomeChatCommands.CheckMessage(message);
                                 break;
                             }
                     }
