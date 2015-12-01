@@ -128,7 +128,7 @@ namespace AlckieBot.Commands
             },
             (message) =>
             {
-                var searchParams = message.text.Substring("!RANDOMQUOTE ".Length);
+                var searchParams = message.text.Substring("!RANDOMQUOTE ".Length).Trim();
                 var quotes = Quote.GetQuotes().Where(q => q.Member.ToUpper().Contains(searchParams.ToUpper())).ToList();
                 if (quotes.Count > 0)
                 {

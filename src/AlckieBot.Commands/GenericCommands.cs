@@ -548,7 +548,7 @@ namespace AlckieBot.Commands
                                    var group = Chat.GetGroup(ConfigurationManager.AppSettings["GROUPME_TOKEN"], bot.GroupID);
                                    if (group != null)
                                    {
-                                       var callMessage = $"Hey everyone, listen up! {message.name} have something to tell you.";
+                                       var callMessage = $"Hey everyone, listen up! {message.name} has something to tell you.";
                                        var userIDs = group.Members.Select(g => g.UserID).ToArray();
                                        var locis = new int[group.Members.Count][];
                                        for (var i = 0; i < group.Members.Count; i++)
