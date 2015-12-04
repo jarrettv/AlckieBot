@@ -652,7 +652,7 @@ namespace AlckieBot.Commands
             return new Command("!modtag", "Set whether plebs can tag the mods or not.", "", Command.CommandType.ModsOnly, bot,
                                (message) =>
                                {
-                                   return (message.text.ToUpper() == "!MODTAG");
+                                   return (Mods.IsUserAMod(message.sender_id) && message.text.ToUpper() == "!MODTAG");
                                },
                                (message) =>
                                {
