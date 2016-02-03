@@ -17,6 +17,8 @@ namespace AlckieBot.Data
 
         public static Bot WhenInRomeChatBot { get; set; }
 
+        public static Bot ReconChatBot { get; set; }
+
         public static void Init()
         {
             var bots = Bot.GetRegisteredBots(ConfigurationManager.AppSettings["GROUPME_TOKEN"]);
@@ -52,6 +54,12 @@ namespace AlckieBot.Data
             if (WhenInRomeChatBot != null)
             {
                 WhenInRomeChatBot.GroupName = "wheninrome";
+            }
+
+            ReconChatBot = bots.FirstOrDefault(b => b.GroupID == "11791099" && b.Name == botName);
+            if (ReconChatBot != null)
+            {
+                ReconChatBot.GroupName = "recon";
             }
         }
     }

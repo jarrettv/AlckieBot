@@ -14,8 +14,8 @@ namespace AlckieBot.Commands
         public static GroupCommands GeneralChatCommands { get; set; }
         public static GroupCommands WarChatCommands { get; set; }
         public static GroupCommands TestChatCommands { get; set; }
-
         public static GroupCommands WhenInRomeChatCommands { get; set; }
+        public static GroupCommands ReconChatCommands { get; set; }
 
         public string GroupName { get; set; }
 
@@ -112,6 +112,27 @@ namespace AlckieBot.Commands
                 WhenInRomeChatCommands.Commands.Add(GenericCommands.TagMeInCommand(Bots.WhenInRomeChatBot));
                 WhenInRomeChatCommands.Commands.Add(GenericCommands.TagMeInWithReasonCommand(Bots.WhenInRomeChatBot));
                 WhenInRomeChatCommands.Commands.Add(GenericCommands.DontFlipTheTableCommand(Bots.WhenInRomeChatBot));
+            }
+
+            if (Bots.ReconChatBot != null)
+            {
+                ReconChatCommands = new GroupCommands("recon", Bots.ReconChatBot);
+
+                ReconChatCommands.Commands.Add(ReconCommands.WelcomeMessageCommand(Bots.ReconChatBot));
+
+                ReconChatCommands.Commands.Add(GenericCommands.CommandListCommand(Bots.ReconChatBot));
+                ReconChatCommands.Commands.Add(GenericCommands.UnixTimeCommand(Bots.ReconChatBot));
+                ReconChatCommands.Commands.Add(GenericCommands.HiCommand(Bots.ReconChatBot));
+                ReconChatCommands.Commands.Add(GenericCommands.BabyComeBackCommand(Bots.ReconChatBot));
+                ReconChatCommands.Commands.Add(GenericCommands.ShutupCommand(Bots.ReconChatBot));
+                ReconChatCommands.Commands.Add(GenericCommands.CuntCommand(Bots.ReconChatBot));
+                ReconChatCommands.Commands.Add(GenericCommands.GifCommand(Bots.ReconChatBot));
+                ReconChatCommands.Commands.Add(GenericCommands.RandomHandsUpCommand(Bots.ReconChatBot));
+                ReconChatCommands.Commands.Add(GenericCommands.RollDiceCommand(Bots.ReconChatBot));
+                ReconChatCommands.Commands.Add(GenericCommands.FlipACoinCommand(Bots.ReconChatBot));
+                ReconChatCommands.Commands.Add(GenericCommands.TagMeInCommand(Bots.ReconChatBot));
+                ReconChatCommands.Commands.Add(GenericCommands.TagMeInWithReasonCommand(Bots.ReconChatBot));
+                ReconChatCommands.Commands.Add(GenericCommands.DontFlipTheTableCommand(Bots.ReconChatBot));
             }
         }
     }

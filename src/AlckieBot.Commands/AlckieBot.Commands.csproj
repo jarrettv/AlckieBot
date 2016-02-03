@@ -54,6 +54,7 @@
     <Compile Include="Groups.cs" />
     <Compile Include="LeadershipCommands.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReconCommands.cs" />
     <Compile Include="WarCommands.cs" />
   </ItemGroup>
   <ItemGroup>

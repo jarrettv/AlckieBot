@@ -23,8 +23,8 @@ namespace AlckieBot.Web.Modules
             Get["/Commands/{group}"] = parameters =>
             {
                 var commands = new List<Command>();
-                string chatTitle = "";
-                switch((string)parameters.group)
+                var chatTitle = "";
+                switch ((string)parameters.group)
                 {
                     case "war":
                         commands = GroupCommands.WarChatCommands.Commands;
@@ -41,6 +41,10 @@ namespace AlckieBot.Web.Modules
                     case "wheninrome":
                         commands = GroupCommands.WhenInRomeChatCommands.Commands;
                         chatTitle = "When In Rome";
+                        break;
+                    case "recon":
+                        commands = GroupCommands.ReconChatCommands.Commands;
+                        chatTitle = "Recon";
                         break;
                     case "test":
                         commands = GroupCommands.TestChatCommands.Commands;
@@ -124,6 +128,11 @@ namespace AlckieBot.Web.Modules
                         case "wheninrome":
                             {
                                 GroupCommands.WhenInRomeChatCommands.CheckMessage(message);
+                                break;
+                            }
+                        case "recon":
+                            {
+                                GroupCommands.ReconChatCommands.CheckMessage(message);
                                 break;
                             }
                     }
